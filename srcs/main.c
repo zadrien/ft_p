@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 16:56:09 by zadrien           #+#    #+#             */
-/*   Updated: 2018/09/18 17:19:50 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/09/18 17:34:11 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,18 +57,27 @@ int     main(int ac, char **av)
     unsigned int    len;
     struct sockaddr caddr;
     char            buf[1024];
-
     
     if (ac != 2)
         usage(av[0]);
     port = ft_atoi(av[1]);
     socket = create_socket(port);
-    cs = accept(socket, &caddr, &len);
-    while ((r = read(cs, buf, 1023)) > 0) {
-        ft_putstr("client send: ");
-        ft_putstr(buf);
-        ft_bzero(buf, 1024);
+    while ((cs = accept(socket, &caddr, &len)) > 0) {
+        if (fork() == 0)
+        {
+            ft_putendl("new client is connected");
+            while ((r = read(cs, buf, 1023)) > 0)
+            {
+                ft_putstr("client send: ");
+                ft_putstr(buf);
+                ft_bzero(buf, 1024);
+            }
+            close(cs);
+            exit(0);
+        }
     }
+
+    
     close(cs);
     close(socket);
     return (0);
