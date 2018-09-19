@@ -6,46 +6,54 @@
 #    By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/02 18:16:06 by zadrien           #+#    #+#              #
-#    Updated: 2017/07/31 15:07:34 by zadrien          ###   ########.fr        #
+#    Updated: 2018/09/19 15:16:11 by zadrien          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 .PHONY: all clean fclean name re
 
 CC= gcc
-NAME= ftp
+SNAME= server
+CNAME= client
 CFLAGS= -g -Wall -Werror -Wextra
 CPATH= srcs/
 OPATH= obj/
 HPATH= includes/ libft/
 INC= $(addprefix -I , $(HPATH))
-CFILES= main.c \
+SFILES= main.c execution.c \
 
-OFILES= $(CFILES:.c=.o)
+CFILES= client/client.c \
+
+OSFILES= $(SFILES:.c=.o)
+OCFILES= $(CFILES:.c=.o)
 
 HFILES= includes/ftp.h \
 		libft/libft.h	\
 
-OBJ= $(addprefix $(OPATH), $(OFILES))
+SOBJ= $(addprefix $(OPATH), $(OSFILES))
+COBJ= $(addprefix $(OPATH), $(OCFILES))
 
-all: $(NAME)
+all: $(SNAME) $(CNAME)
 
-$(NAME): $(OBJ)
+$(SNAME): $(SOBJ)
 	make -C libft
-	$(CC) $(CFLAGS) $(OBJ) -ltermcap libft/libft.a -o $(NAME)
+	$(CC) $(CFLAGS) $(SOBJ) -ltermcap libft/libft.a -o $(SNAME)
+
+$(CNAME): $(COBJ)
+	$(CC) $(CFLAGS) $(COBJ) -ltermcap libft/libft.a -o $(CNAME)
 
 $(OPATH)%.o: $(CPATH)%.c $(HFILES)
-	@mkdir -p $(OPATH)/edit_line
+	@mkdir -p $(OPATH)client
 
 	$(CC) -g -Wall -Werror -Wextra  $(INC) $< -c -o $@
 
 clean:
 	make -C libft clean
-	rm -rf $(OBJ)
+	rm -rf $(SOBJ) $(COBJ)
 
 fclean: clean
 	make -C libft fclean
-	rm -rf $(NAME)
+	rm -rf $(SNAME) $(CNAME)
 	rm -rf $(OPATH)
 
 re: fclean all

@@ -1,27 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   client.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 16:56:09 by zadrien           #+#    #+#             */
-/*   Updated: 2018/09/19 15:33:45 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/09/19 15:14:07 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "ftp.h"
 
 
 void usage(char *str)
 {
     ft_putstr_fd(str, 2);
-    ft_putendl_fd(" <port>", 2);
+    ft_putendl_fd(" <addr> <port>", 2);
     exit(-1);
 }
 
 
-int     create_server(int port)
+int     create_client(char *addr, int port)
 {
     int     sock;
     struct protoent *proto;
@@ -38,46 +39,45 @@ int     create_server(int port)
     }
     sin.sin_family = AF_INET;
     sin.sin_port = htons(port);
-    sin.sin_addr.s_addr = htonl(INADDR_ANY);
-    if (bind(sock, (const struct sockaddr *)&sin ,sizeof(sin)) == -1) {
-        ft_putendl_fd("bind error", 2);
+    sin.sin_addr.s_addr = inet_addr(addr);
+    if (connect(sock, (const struct sockaddr *)&sin ,sizeof(sin)) == -1) {
+        ft_putendl_fd("Connect error", 2);
         return (-1);
     }
-    listen(sock ,42);
     return (sock);
 }
 
-int     main(int ac, char **av, char **env)
+int     main(int ac, char **av)
 {
     int             port;
     int             socket;
-    int             cs;
     int             r;
-    unsigned int    len;
-    struct sockaddr caddr;
+    char            *str;
     char            buf[1024];
-    char            *suc = "SUCCESS";
 
-    if (ac != 2)
+    if (ac != 3)
         usage(av[0]);
-    port = ft_atoi(av[1]);
-    socket = create_server(port);
-    while ((cs = accept(socket, &caddr, &len)) > 0) {
-        if (fork() == 0)
+    port = ft_atoi(av[2]);
+    socket = create_client(av[1], port);
+    ft_putstr_fd("$> ", 2);
+    while (get_next_line(1, &str) > 0)
+    {
+        if (!ft_strcmp(str, "quit"))
         {
-            ft_putendl("new client is connected");
-            while ((r = read(cs, buf, 1023)) > 0)
-            {
-                execution(buf);
-                ft_bzero(buf, 1024);
-                send(cs, suc, ft_strlen(suc), 0);
-            }
-            ft_putendl("user is disconnected");
-            close(cs);
-            exit(0);
+            free(str);
+            break ;
         }
-    }    
-    close(cs);
+        write(socket, str, ft_strlen(str));
+        if ((r = recv(socket, buf, 1023 , 0)) <= 0)
+        {
+            ft_putendl_fd("recv error", 2);
+            break ;
+        }
+        buf[r] = '\0';
+        ft_putendl(buf);
+        
+        ft_putstr_fd("$> ", 2);        
+    }
     close(socket);
     return (0);
 }

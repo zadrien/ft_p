@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/19 15:32:31 by zadrien           #+#    #+#             */
-/*   Updated: 2017/08/03 18:17:48 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/09/19 14:50:27 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,4 +99,21 @@ void				ft_putendn(int i);
 int					count_tab(char **ta);
 t_env				*find_node(t_env **env, char *var, char *value);
 char				*ft_strjoinf(char *s1, char *s2, int w);
+
+typedef struct		s_token
+{
+	char			*str;
+	int				*type;
+	struct s_token	*next;
+}					t_token;
+
+typedef	struct		s_key
+{
+	int				key;
+	void			(*f)(t_token** ,char**, char*, int*);
+}					t_key;
+
+void				init_token(t_token **tok);
+void				free_token(t_token **token);
+t_token				*parser(char *str);
 #endif
