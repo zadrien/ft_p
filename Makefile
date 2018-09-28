@@ -6,7 +6,7 @@
 #    By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/02 18:16:06 by zadrien           #+#    #+#              #
-#    Updated: 2018/09/19 15:16:11 by zadrien          ###   ########.fr        #
+#    Updated: 2018/09/28 11:46:40 by zadrien          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ CPATH= srcs/
 OPATH= obj/
 HPATH= includes/ libft/
 INC= $(addprefix -I , $(HPATH))
-SFILES= main.c execution.c \
+SFILES= main.c execution.c features/login/login.c\
 
 CFILES= client/client.c \
 
@@ -44,6 +44,8 @@ $(CNAME): $(COBJ)
 
 $(OPATH)%.o: $(CPATH)%.c $(HFILES)
 	@mkdir -p $(OPATH)client
+	@mkdir -p $(OPATH)features
+	@mkdir -p $(OPATH)features/login
 
 	$(CC) -g -Wall -Werror -Wextra  $(INC) $< -c -o $@
 

@@ -1,29 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ftp.h                                              :+:      :+:    :+:   */
+/*   login.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/18 16:57:00 by zadrien           #+#    #+#             */
-/*   Updated: 2018/09/28 14:12:40 by zadrien          ###   ########.fr       */
+/*   Created: 2018/09/27 15:11:53 by zadrien           #+#    #+#             */
+/*   Updated: 2018/09/28 14:10:53 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FTP_H
-# define FTP_H
+#ifndef LOGIN_H
+# define LOGIN_H
 
-# include <netdb.h>
-# include <sys/socket.h>
-# include <netinet/in.h>
-# include <arpa/inet.h>
-# include <stdio.h>
-# include <signal.h>
-# include "libft.h"
-# include "login.h"
+#include "libft.h"
 
-void    execution(char *str, t_usr **usr);
-void    send_msg(int cs, char *msg);
-void    ft_env(t_token **arg, t_usr **usr);
+typedef struct      s_usr
+{
+    int             cs;
+    char            *user;
+    char            *password;
+    char            *pwd;
+    struct s_usr    *next;
+}                   t_usr;
+
+t_usr   *check_user(t_usr **lst, char *name);
+void    finding_usr(t_usr **lst, int cs);
+void    fork_client(t_usr **usr);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/19 15:32:31 by zadrien           #+#    #+#             */
-/*   Updated: 2018/09/19 14:50:27 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/09/20 13:35:28 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,6 @@
 # include <stdlib.h>
 # include <unistd.h>
 # define BUFF_SIZE 10
-
-typedef struct		s_env
-{
-	char			*var;
-	char			*value;
-	struct s_env	*next;
-}					t_env;
 
 typedef struct		s_list
 {
@@ -97,8 +90,20 @@ int					ft_errormsg(char *env, char *cmd, char *str);
 char				**ft_split(char const *s);
 void				ft_putendn(int i);
 int					count_tab(char **ta);
-t_env				*find_node(t_env **env, char *var, char *value);
 char				*ft_strjoinf(char *s1, char *s2, int w);
+
+
+typedef struct		s_env
+{
+	char			*var;
+	char			*value;
+	struct s_env	*next;
+}					t_env;
+
+t_env   			*new_env(char **env);
+int     			add_env(t_env **env, char **var);
+t_env				*find_node(t_env **env, char *var, char *value);
+
 
 typedef struct		s_token
 {

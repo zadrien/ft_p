@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 16:56:09 by zadrien           #+#    #+#             */
-/*   Updated: 2018/09/19 15:33:45 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/09/28 14:19:52 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,37 +47,77 @@ int     create_server(int port)
     return (sock);
 }
 
-int     main(int ac, char **av, char **env)
+void     send_msg(int cs, char *msg) 
 {
+    send(cs, msg, ft_strlen(msg), 0);
+}
+
+int     main(int ac, char **av)
+{
+    int             cs;
     int             port;
     int             socket;
-    int             cs;
-    int             r;
+    t_usr           *tmp;
+    t_usr           *usr = NULL;
     unsigned int    len;
     struct sockaddr caddr;
-    char            buf[1024];
-    char            *suc = "SUCCESS";
 
+    
     if (ac != 2)
         usage(av[0]);
-    port = ft_atoi(av[1]);
+        port = ft_atoi(av[1]);
     socket = create_server(port);
-    while ((cs = accept(socket, &caddr, &len)) > 0) {
-        if (fork() == 0)
+    while ((cs = accept(socket, &caddr, &len)) > 0)
+    {
+        if (usr)
         {
-            ft_putendl("new client is connected");
-            while ((r = read(cs, buf, 1023)) > 0)
+            tmp = usr;
+            while (tmp)
             {
-                execution(buf);
-                ft_bzero(buf, 1024);
-                send(cs, suc, ft_strlen(suc), 0);
+                ft_env(NULL, &tmp);
+                tmp = tmp->next;
             }
-            ft_putendl("user is disconnected");
-            close(cs);
-            exit(0);
         }
-    }    
-    close(cs);
-    close(socket);
-    return (0);
+        finding_usr(&usr, cs);
+    }
+
+
 }
+
+// int     main(int ac, char **av, char **envp)
+// {
+//     int             port;
+//     int             socket;
+//     int             cs;
+//     int             r;
+//     unsigned int    len;
+//     struct sockaddr caddr;
+//     char            buf[1024];
+//     char            *suc = "SUCCESS";
+//     t_env           *env;
+
+//     env = new_env(envp);
+//     ft_putendl("init env");
+//     if (ac != 2 && env)
+//         usage(av[0]);
+//     port = ft_atoi(av[1]);
+//     socket = create_server(port);
+//     while ((cs = accept(socket, &caddr, &len)) > 0) {
+//         if (fork() == 0)
+//         {
+//             ft_putendl("new client is connected");
+//             while ((r = read(cs, buf, 1023)) > 0)
+//             {
+//                 execution(buf, &env);
+//                 ft_bzero(buf, 1024);
+//                 send(cs, suc, ft_strlen(suc), 0);
+//             }
+//             ft_putendl("user is disconnected");
+//             close(cs);
+//             exit(0);
+//         }
+//     }    
+//     close(cs);
+//     close(socket);
+//     return (0);
+// }

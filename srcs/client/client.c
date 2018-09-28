@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 16:56:09 by zadrien           #+#    #+#             */
-/*   Updated: 2018/09/19 15:14:07 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/09/28 13:36:20 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,28 @@ int     create_client(char *addr, int port)
     return (sock);
 }
 
+int     identification(int socket)
+{
+    int     r;
+    char    *line;
+    char    str[1024];
+
+    ft_putstr("Nom d'utilisateur: ");
+    if (get_next_line(1, &line) > 0)
+    {
+        write(socket, line, ft_strlen(line));
+    }
+    if ((r = recv(socket, str, 1023, 0)) <= 0)
+    {
+        ft_putendl_fd("identification recv error2", 2);
+        return (0);
+    }
+    str[r] = '\0';
+    if (!(ft_strcmp(str, "SUCCESS")))
+        return (1);
+    return (0);
+}
+
 int     main(int ac, char **av)
 {
     int             port;
@@ -59,24 +81,27 @@ int     main(int ac, char **av)
         usage(av[0]);
     port = ft_atoi(av[2]);
     socket = create_client(av[1], port);
-    ft_putstr_fd("$> ", 2);
-    while (get_next_line(1, &str) > 0)
+    if (identification(socket))
     {
-        if (!ft_strcmp(str, "quit"))
+        ft_putstr_fd("$> ", 2);
+        while (get_next_line(1, &str) > 0)
         {
-            free(str);
-            break ;
+            if (!ft_strcmp(str, "quit"))
+            {
+                free(str);
+                break ;
+            }
+            write(socket, str, ft_strlen(str));
+            if ((r = recv(socket, buf, 1023 , 0)) <= 0)
+            {
+                ft_putendl_fd("recv error", 2);
+                break ;
+            }
+            buf[r] = '\0';
+            ft_putendl(buf);
+            
+            ft_putstr_fd("$> ", 2);        
         }
-        write(socket, str, ft_strlen(str));
-        if ((r = recv(socket, buf, 1023 , 0)) <= 0)
-        {
-            ft_putendl_fd("recv error", 2);
-            break ;
-        }
-        buf[r] = '\0';
-        ft_putendl(buf);
-        
-        ft_putstr_fd("$> ", 2);        
     }
     close(socket);
     return (0);
