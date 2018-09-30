@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 16:56:09 by zadrien           #+#    #+#             */
-/*   Updated: 2018/09/28 13:36:20 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/09/30 16:06:26 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,21 @@ int     identification(int socket)
     return (0);
 }
 
+char    *cmd_line()
+{
+    char    *line;
+
+    ft_putstr_fd("$> ", 2);
+    if (get_next_line(1, &line) > 0)
+        return (line);
+    return (NULL);
+}
+
 int     main(int ac, char **av)
 {
-    int             port;
-    int             socket;
-    int             r;
-    char            *str;
-    char            buf[1024];
+    int     port;
+    int     socket;
+    char    *str;
 
     if (ac != 3)
         usage(av[0]);
@@ -83,26 +91,52 @@ int     main(int ac, char **av)
     socket = create_client(av[1], port);
     if (identification(socket))
     {
-        ft_putstr_fd("$> ", 2);
-        while (get_next_line(1, &str) > 0)
+        while (1)
         {
-            if (!ft_strcmp(str, "quit"))
-            {
-                free(str);
-                break ;
-            }
-            write(socket, str, ft_strlen(str));
-            if ((r = recv(socket, buf, 1023 , 0)) <= 0)
-            {
-                ft_putendl_fd("recv error", 2);
-                break ;
-            }
-            buf[r] = '\0';
-            ft_putendl(buf);
-            
-            ft_putstr_fd("$> ", 2);        
+            str = cmd_line();
+            client_exec(str, socket);
+            ft_strdel(&str);
         }
     }
     close(socket);
     return (0);
 }
+
+// int     main(int ac, char **av)
+// {
+//     int             port;
+//     int             socket;
+//     int             r;
+//     char            *str;
+//     char            buf[1024];
+
+//     if (ac != 3)
+//         usage(av[0]);
+//     port = ft_atoi(av[2]);
+//     socket = create_client(av[1], port);
+//     if (identification(socket))
+//     {
+        
+//         ft_putstr_fd("$> ", 2);
+//         while (get_next_line(1, &str) > 0)
+//         {
+//             if (!ft_strcmp(str, "quit"))
+//             {
+//                 free(str);
+//                 break ;
+//             }
+//             write(socket, str, ft_strlen(str));
+//             if ((r = recv(socket, buf, 1023 , 0)) <= 0)
+//             {
+//                 ft_putendl_fd("recv error", 2);
+//                 break ;
+//             }
+//             buf[r] = '\0';
+//             ft_putendl(buf);
+            
+//             ft_putstr_fd("$> ", 2);        
+//         }
+//     }
+//     close(socket);
+//     return (0);
+// }

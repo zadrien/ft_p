@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 10:59:22 by zadrien           #+#    #+#             */
-/*   Updated: 2018/09/20 13:35:23 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/09/30 12:05:08 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_env   *new_env(char **env)
 
     i = -1;
     if (!env)
-        return (NULL);
+        return (NULL); // create new env with pwd variable only
     if (!(start = (t_env*)malloc(sizeof(t_env))))
         return (NULL);
     tmp = start;

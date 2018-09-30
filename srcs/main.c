@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 16:56:09 by zadrien           #+#    #+#             */
-/*   Updated: 2018/09/28 14:19:52 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/09/30 12:28:17 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int     main(int ac, char **av)
     
     if (ac != 2)
         usage(av[0]);
-        port = ft_atoi(av[1]);
+    port = ft_atoi(av[1]);
     socket = create_server(port);
     while ((cs = accept(socket, &caddr, &len)) > 0)
     {

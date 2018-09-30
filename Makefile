@@ -6,7 +6,7 @@
 #    By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/02 18:16:06 by zadrien           #+#    #+#              #
-#    Updated: 2018/09/28 11:46:40 by zadrien          ###   ########.fr        #
+#    Updated: 2018/09/30 16:13:48 by zadrien          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,9 +20,10 @@ CPATH= srcs/
 OPATH= obj/
 HPATH= includes/ libft/
 INC= $(addprefix -I , $(HPATH))
-SFILES= main.c execution.c features/login/login.c\
+SFILES= main.c execution/server/execution.c features/login/login.c\
 
-CFILES= client/client.c \
+CFILES= client.c execution/client/client_exec.c execution/client/lcd.c \
+		execution/client/lls.c execution/client/lpwd.c execution/get.c \
 
 OSFILES= $(SFILES:.c=.o)
 OCFILES= $(CFILES:.c=.o)
@@ -37,15 +38,18 @@ all: $(SNAME) $(CNAME)
 
 $(SNAME): $(SOBJ)
 	make -C libft
-	$(CC) $(CFLAGS) $(SOBJ) -ltermcap libft/libft.a -o $(SNAME)
+	$(CC) $(CFLAGS) $(SOBJ) libft/libft.a -o $(SNAME)
 
 $(CNAME): $(COBJ)
-	$(CC) $(CFLAGS) $(COBJ) -ltermcap libft/libft.a -o $(CNAME)
+	$(CC) $(CFLAGS) $(COBJ) libft/libft.a -o $(CNAME)
 
 $(OPATH)%.o: $(CPATH)%.c $(HFILES)
-	@mkdir -p $(OPATH)client
 	@mkdir -p $(OPATH)features
 	@mkdir -p $(OPATH)features/login
+	@mkdir -p $(OPATH)execution/
+	@mkdir -p $(OPATH)execution/client
+	@mkdir -p $(OPATH)execution/server
+
 
 	$(CC) -g -Wall -Werror -Wextra  $(INC) $< -c -o $@
 
