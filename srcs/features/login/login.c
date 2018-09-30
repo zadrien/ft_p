@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/27 15:22:22 by zadrien           #+#    #+#             */
-/*   Updated: 2018/09/28 14:08:59 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/09/30 11:27:43 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void    fork_client(t_usr **usr)
         {
             str[r] = '\0';
             ft_putendl(str);
-            execution(str, &tmp);
+            // execution(str, &tmp);
             // ft_bzero(str, 1024);
             send_msg(tmp->cs, "success");
         }
