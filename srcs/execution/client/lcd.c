@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/30 13:32:14 by zadrien           #+#    #+#             */
-/*   Updated: 2018/09/30 16:05:41 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/02 11:55:37 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void    ft_lcd(t_token **lst, int socket)
     if ((i = ft_countarg(&(*lst)->next)) <= 1)
     {
         tmp = (*lst)->next;
+        ft_putendl(tmp->str);
         ft_putendl_fd("lcd", 2);
         if (!chdir(tmp->str))
             getcwd(buf, 1023);

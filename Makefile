@@ -6,7 +6,7 @@
 #    By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/02 18:16:06 by zadrien           #+#    #+#              #
-#    Updated: 2018/09/30 16:13:48 by zadrien          ###   ########.fr        #
+#    Updated: 2018/10/02 12:37:45 by zadrien          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,10 +20,10 @@ CPATH= srcs/
 OPATH= obj/
 HPATH= includes/ libft/
 INC= $(addprefix -I , $(HPATH))
-SFILES= main.c execution/server/execution.c features/login/login.c\
+SFILES= main.c execution/server/execution.c features/login/login.c execution/ft_get.c execution/ft_put.c\
 
 CFILES= client.c execution/client/client_exec.c execution/client/lcd.c \
-		execution/client/lls.c execution/client/lpwd.c execution/get.c \
+		execution/client/lls.c execution/client/lpwd.c execution/ft_get.c execution/ft_put.c \
 
 OSFILES= $(SFILES:.c=.o)
 OCFILES= $(CFILES:.c=.o)
