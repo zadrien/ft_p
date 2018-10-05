@@ -6,7 +6,7 @@
 #    By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/02 18:16:06 by zadrien           #+#    #+#              #
-#    Updated: 2018/10/05 13:56:30 by zadrien          ###   ########.fr        #
+#    Updated: 2018/10/02 12:37:45 by zadrien          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,15 +20,15 @@ CPATH= srcs/
 OPATH= obj/
 HPATH= includes/ libft/
 INC= $(addprefix -I , $(HPATH))
-SFILES= server/main.c server/pi/serverPI.c \
+SFILES= main.c execution/server/execution.c features/login/login.c execution/ft_get.c execution/ft_put.c\
 
-CFILES= user/main.c user/pi/com_link.c user/pi/userPI.c \
+CFILES= client.c execution/client/client_exec.c execution/client/lcd.c \
+		execution/client/lls.c execution/client/lpwd.c execution/ft_get.c execution/ft_put.c \
 
 OSFILES= $(SFILES:.c=.o)
 OCFILES= $(CFILES:.c=.o)
 
-HFILES= includes/server.h \
-		includes/user.h \
+HFILES= includes/ftp.h \
 		libft/libft.h	\
 
 SOBJ= $(addprefix $(OPATH), $(OSFILES))
@@ -44,10 +44,12 @@ $(CNAME): $(COBJ)
 	$(CC) $(CFLAGS) $(COBJ) libft/libft.a -o $(CNAME)
 
 $(OPATH)%.o: $(CPATH)%.c $(HFILES)
-	@mkdir -p $(OPATH)user/
-	@mkdir -p $(OPATH)user/pi
-	@mkdir -p $(OPATH)server/
-	@mkdir -p $(OPATH)server/pi
+	@mkdir -p $(OPATH)features
+	@mkdir -p $(OPATH)features/login
+	@mkdir -p $(OPATH)execution/
+	@mkdir -p $(OPATH)execution/client
+	@mkdir -p $(OPATH)execution/server
+
 
 	$(CC) -g -Wall -Werror -Wextra  $(INC) $< -c -o $@
 
