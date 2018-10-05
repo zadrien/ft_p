@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 12:48:21 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/05 13:53:17 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/05 16:54:48 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int     ft_user(t_token **lst, int cs)
 {
     (void)lst;
     (void)cs;
+    ft_putendl("here");
     return (0);
 }
 

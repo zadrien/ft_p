@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 13:06:05 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/05 13:59:47 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/05 17:23:16 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,17 @@
 typedef struct  s_pi
 {
     char        *cmd;
-    void        (*f)(t_token**, int s);
+    int        (*f)(t_token**, int s);
 }               t_pi;
+
+int     wait_response(int s)
+{
+    int     res;
+
+    recv(s, &res, sizeof(int), 0);
+    printf("response:%d\n", res);
+    return (res);
+}
 
 char    *ft_struct(char *cmd, t_token **arg)
 {
@@ -39,24 +48,28 @@ char    *ft_struct(char *cmd, t_token **arg)
     return (line);
 }
 
-void    ft_username(t_token **lst, int s)
+int    ft_username(t_token **lst, int s)
 {
     (void)s;
     char                *line;
-    char   buf[4] = "USER";
+    char   buf[5] = "USER\0";
 
     line = ft_struct(buf, &(*lst)->next);
-    ft_putendl(line);
+    send(s, line, ft_strlen(line), 0);
+    ft_strdel(&line);
+    return (wait_response(s));
 
 }
 
-void    ft_password(t_token **lst, int s)
+int    ft_password(t_token **lst, int s)
 {
     (void)s;
     char                *line;
-    char   buf[4] = "PASS";
+    char   buf[5] = "PASS\0";
     line = ft_struct(buf, &(*lst)->next);
-    ft_putendl(line);
+    send(s, line, ft_strlen(line), 0);
+    ft_strdel(&line);
+    return (wait_response(s));
 }
 
 int     userPI(char *str, int s)
@@ -73,7 +86,7 @@ int     userPI(char *str, int s)
         while (++i < m)
         {
             if (!ft_strcmp(lst->str, cmd[i].cmd))
-                cmd[i].f(&lst, s);
+                return (cmd[i].f(&lst, s));
         }
     return (0);
 }

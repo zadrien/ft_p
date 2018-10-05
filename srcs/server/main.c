@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 12:16:01 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/05 13:47:42 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/05 16:53:24 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ int     main(int ac, char **av)
     socket = init_server(ft_atoi(av[1]));
     while ((cs = accept(socket, &addr, &len)) > 0)
     {
+        ft_putendl("New user");
         init_fork(cs);
     }
     return (0);
