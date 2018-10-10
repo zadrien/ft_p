@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 12:16:01 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/09 12:08:46 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/10 09:05:01 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,10 @@ void    client_session(int cs)
         buf[r] = '\0';
         serverPI(buf, &usr, cs);
     }
+    ft_putendl("End fork close socket");
     close(cs);
 }
+
 void    init_fork(int cs)
 {
     if (fork() == 0)

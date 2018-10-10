@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 12:48:21 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/09 12:19:36 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/10 11:11:33 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,10 @@ void    serverPI(char *str, t_usr **usr, int cs)
     int             i;
     int             m;
     t_token               *lst;
-    static const t_cmd    cmd[3] = {{"USER", &ft_user}, {"PASS", &ft_password}, {"QUIT", &ft_logout}};
+    static const t_cmd    cmd[4] = {{"USER", &ft_user}, {"PASS", &ft_password}, {"QUIT", &ft_logout}, {"LIST", &ft_list}};
 
     i = -1;
-    m = 3;
+    m = 4;
     if ((lst = parser(str)))
         while (++i < m)
         {

@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 13:06:05 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/09 12:41:53 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/10 12:05:30 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,17 @@ typedef struct  s_pi
 int     wait_response(int s, int res)
 {
     int     r;
-
-    recv(s, &res, sizeof(int), 0);
-    printf("response:%d\n", r);
+    char    buf[8];
     if (res)
     {
-
+        while ((r = recv(s, buf, 8, 0)))
+        {
+            buf[r] = '\0';
+            ft_putstr(buf);
+        }
+    } else {
+        recv(s, &r, sizeof(int), 0);
+        printf("response:%d\n", r);
     }
     return (r);
 }
@@ -98,15 +103,26 @@ int     ft_pwd(t_token **lst, int s)
     return (wait_response(s, 1));
 }
 
+int     ft_ls(t_token **lst, int s)
+{
+    (void)s;
+    char    *line;
+    char    buf[5] = "LIST\0";
+    line = ft_struct(buf, &(*lst)->next);
+    send(s, line, ft_strlen(line), 0);
+    ft_strdel(&line);
+    return (wait_response(s, 1));
+}
+
 int     userPI(char *str, int s)
 {
     int                 i;
     int                 m;
     t_token             *lst;
-    static const t_pi   cmd[3] = {{"username", &ft_username}, {"password", &ft_password}, {"logout", &ft_logout}};
+    static const t_pi   cmd[4] = {{"username", &ft_username}, {"password", &ft_password}, {"logout", &ft_logout}, {"ls", &ft_ls}};
 
     i = -1;
-    m = 3;
+    m = 4;
     ft_putendl("ALLOR");
     if ((lst = parser(str)))
         while (++i < m)
