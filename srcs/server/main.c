@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 12:16:01 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/05 16:53:24 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/09 12:08:46 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,25 @@ void usage(char *str)
     exit(-1);
 }
 
+void    client_session(int cs)
+{
+    int             r;
+    char            buf[1024];
+    t_usr           *usr;
+
+    usr = NULL;
+    while ((r = read(cs, buf, 1023)) > 0)
+    {
+        buf[r] = '\0';
+        serverPI(buf, &usr, cs);
+    }
+    close(cs);
+}
 void    init_fork(int cs)
 {
-    int     r;
-    char    buf[1024];
-
     if (fork() == 0)
     {
-        while ((r = read(cs, buf, 1023)) > 0)
-        {
-            buf[r] = '\0';
-            serverPI(buf, cs);
-        }
-        close(cs);
+        client_session(cs);
     }
 }
 

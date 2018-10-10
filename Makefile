@@ -6,7 +6,7 @@
 #    By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/02 18:16:06 by zadrien           #+#    #+#              #
-#    Updated: 2018/10/05 13:56:30 by zadrien          ###   ########.fr        #
+#    Updated: 2018/10/09 12:19:58 by zadrien          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ CPATH= srcs/
 OPATH= obj/
 HPATH= includes/ libft/
 INC= $(addprefix -I , $(HPATH))
-SFILES= server/main.c server/pi/serverPI.c \
+SFILES= server/main.c server/pi/serverPI.c server/pi/auth.c server/pi/auth_utils.c \
 
 CFILES= user/main.c user/pi/com_link.c user/pi/userPI.c \
 

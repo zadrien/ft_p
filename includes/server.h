@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 13:34:02 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/05 13:45:38 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/09 12:26:08 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,24 @@
 
 # include "libft.h"
 
-void    serverPI(char *str, int cs);
+typedef struct      s_usr
+{
+    int             cs;
+    char            *user;
+    int             password;
+    char            *pwd;
+    struct s_usr    *next;
+}                   t_usr;
+
+void    serverPI(char *str, t_usr **usr, int cs);
+
+int     ft_user(t_token **lst, t_usr **usr, int cs);
+int     ft_password(t_token **lst, t_usr **usr, int cs);
+int     ft_logout(t_token **lst, t_usr **usr, int cs);
+
+
+int     user_reply(int code, char *msg, int cs);
+int     check_user(t_usr **usr, int cs);
+int     verify_auth(char *str)
 
 #endif

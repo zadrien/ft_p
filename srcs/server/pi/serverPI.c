@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 12:48:21 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/05 16:54:48 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/09 12:19:36 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 typedef struct      s_cmd
 {
     char            *cmd;
-    int            (*f)(t_token**, int);
+    int            (*f)(t_token**, t_usr**, int);
 }                   t_cmd;
 
 
@@ -24,35 +24,35 @@ void    reply(int res, int cs)
     send(cs, &res, sizeof(int), 0);
 }
 
-int     ft_user(t_token **lst, int cs)
+int     ft_countarg(t_token **lst)
 {
-    (void)lst;
-    (void)cs;
-    ft_putendl("here");
-    return (0);
+    int i;
+    t_token *tmp;
+
+    i = 0;
+    if ((tmp = *lst))
+        while (tmp)
+        {
+            i++;
+            tmp = tmp->next;
+        }
+    return (i);
 }
 
-int     ft_password(t_token **lst, int cs)
-{
-    (void)lst;
-    (void)cs;
-    return (0);
-}
-
-void    serverPI(char *str, int cs)
+void    serverPI(char *str, t_usr **usr, int cs)
 {
     int             i;
     int             m;
     t_token               *lst;
-    static const t_cmd    cmd[2] = {{"USER", &ft_user}, {"PASS", &ft_password}};
+    static const t_cmd    cmd[3] = {{"USER", &ft_user}, {"PASS", &ft_password}, {"QUIT", &ft_logout}};
 
     i = -1;
-    m = 2;
+    m = 3;
     if ((lst = parser(str)))
         while (++i < m)
         {
             if (!ft_strcmp(lst->str, cmd[i].cmd))
-                reply(cmd[i].f(&lst, cs), cs);
+                reply(cmd[i].f(&lst, usr, cs), cs);
         }
 
 }
