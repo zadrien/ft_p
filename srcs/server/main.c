@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 12:16:01 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/10 09:05:01 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/18 17:21:30 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int     init_server(int port)
         ft_putendl_fd("proto is null", 2);
         return (-1);
     }
-    if ((sock = socket(PF_INET, SOCK_STREAM, proto->p_proto)) == -1) {
+    if ((sock = socket(AF_INET, SOCK_STREAM, proto->p_proto)) == -1) {
         ft_putendl_fd("socket creation error", 2);
         return (-1);
     }

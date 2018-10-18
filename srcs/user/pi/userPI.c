@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 13:06:05 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/10 12:05:30 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/12 16:22:19 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int     wait_response(int s, int res)
     char    buf[8];
     if (res)
     {
-        while ((r = recv(s, buf, 8, 0)))
+        while ((r = recv(s, buf, 8, 0)) > 0)
         {
             buf[r] = '\0';
             ft_putstr(buf);

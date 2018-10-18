@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/10 11:11:41 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/10 12:04:53 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/12 16:27:11 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,15 @@ void    send_client(int fd, int cs)
 {
     int     r;
     char    buf[8];
+    struct stat stat;
     if (fork() == 0)
     {
+        if (fstat(fd, &stat) == 0)
+        {
+            ft_putstr("Size of stream: ");
+            ft_putnbr(stat.st_size);
+            ft_putendl("");
+        }
         while ((r = read(fd, buf, 7)) > 0)
         {
             buf[r] = '\0';
