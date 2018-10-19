@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/18 17:24:23 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/18 20:21:20 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/19 08:48:29 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,13 @@
 # include <sys/wait.h>
 # include <sys/stat.h>
 # include <fcntl.h>
-#include "libft.h"
+# include "libft.h"
+
+typedef struct      s_usr
+{
+    int             cs;
+    struct in_addr  ip;
+}                   t_usr;
 
 int     init_server(int port)
 {
@@ -42,7 +48,7 @@ int     init_server(int port)
     sin.sin_family = AF_INET;
     sin.sin_port = htons(port);
     sin.sin_addr.s_addr = htonl(INADDR_ANY);
-    if (bind(sock, (const struct sockaddr *)&sin ,sizeof(sin)) == -1) {
+    if (bind(sock, (const struct sockaddr *)&sin, sizeof(sin)) == -1) {
         ft_putendl_fd("bind error", 2);
         return (-1);
     }
@@ -54,14 +60,18 @@ void    send_data(int s)
 {
     int     r;
     int     fd;
-    char    buf[1024];
+    char    buf[8];
 
     if ((fd = open("file", O_RDONLY)))
     {
-        while ((r = read(fd, buf, 1023)) > 0)
+        while ((r = read(fd, buf, 7)) > 0)
         {
             buf[r] = '\0';
-            send(s, buf, ft_strlen(buf), 0);
+            // ft_putstr(buf);
+            if (send(s, buf, ft_strlen(buf), 0) == -1)
+            {
+                ft_putendl("ERROR");
+            }
         }
         close(fd);
         close(s);
@@ -69,7 +79,7 @@ void    send_data(int s)
     }
 }
 
-void    data_link(int cs)
+void    data_link(t_usr *usr)
 {
     int     port;
     int     sock;
@@ -80,17 +90,12 @@ void    data_link(int cs)
 
 
     port = 150;
-    send(cs, &port, sizeof(int), 0);
+    send(usr->cs, &port, sizeof(int), 0);
 
 
-    recv(cs, &port, sizeof(int), 0);
+    recv(usr->cs, &port, sizeof(int), 0);
     printf("DTP PORT: %d\n", port);
 
-    if (getsockname(cs, &host, &len) == -1)
-    {
-        ft_putendl_fd("can't get socket details", 2);
-        return ;
-    }
     if ((proto = getprotobyname("tcp")))
     {
         if ((sock = socket(AF_INET, SOCK_STREAM, proto->p_proto)) != -1)
@@ -98,7 +103,7 @@ void    data_link(int cs)
             ft_putendl_fd("Data linkL: Socket created", 2);
             sin.sin_family = AF_INET;
             sin.sin_port = htons(port);
-            sin.sin_addr.s_addr = inet_addr(host.sa_data);
+            sin.sin_addr.s_addr = usr->ip.s_addr;
             if (connect(sock, (const struct sockaddr*)&sin, sizeof(sin)) == -1)
             {
                 ft_putendl_fd("Data link server: Connect error", 2);
@@ -112,21 +117,22 @@ void    data_link(int cs)
     ft_putendl_fd("Data link server: FAILURE", 2);
 }
 
-void    loop(int cs, struct sockaddr addr)
+void    loop(t_usr *usr)
 {
     int     r;
     char    buf[1024];
 
-    if ((r = recv(cs, buf, 1023, 0)))
+    if ((r = recv(usr->cs, buf, 1023, 0)))
     {
         buf[r] = '\0';
         ft_putendl(buf);
         if (!ft_strcmp(buf, "ls"))
         {
             ft_putendl("LS FOUND");
-            data_link(cs);
+            data_link(usr);
         }
-        close(cs);
+        close(usr->cs);
+        //free struct t_usr
     }
 }
 
@@ -135,7 +141,11 @@ int     main(int ac, char **av)
     int cs;
     int sock;
     int port;
-    struct sockaddr addr;
+    struct sockaddr_in addr;
+    char                str[INET_ADDRSTRLEN];
+    struct sockaddr_in *host;
+    struct in_addr    ipAddr;
+    t_usr           *usr;
     socklen_t       len;
 
     if (ac != 2)
@@ -143,10 +153,20 @@ int     main(int ac, char **av)
     port = ft_atoi(av[1]);
     if (sock = init_server(port))
     {
-        if (cs = accept(sock, &addr, &len))
+        if (cs = accept(sock, (struct sockaddr*)&addr, &len))
         {
+            if (!(usr = (t_usr*)malloc(sizeof(t_usr))))
+                return (0);
+            usr->cs = cs;
+            usr->ip = addr.sin_addr;
+            // host = (struct sockaddr_in*)&addr;
+            // ipAddr = addr.sin_addr;
+            inet_ntop(AF_INET, &(usr)->ip, str, INET_ADDRSTRLEN);
+            printf("ip address= %s\n", str);
             ft_putendl_fd("New user connected", 2);
-            loop(cs, addr);
+            loop(usr);
         }
+        close(sock);
     }
+    return (0);
 }

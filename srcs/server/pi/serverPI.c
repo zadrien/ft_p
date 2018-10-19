@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 12:48:21 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/10 11:11:33 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/19 10:52:28 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 typedef struct      s_cmd
 {
     char            *cmd;
-    int            (*f)(t_token**, t_usr**, int);
+    int            (*f)(t_token**, t_usr**);
 }                   t_cmd;
 
 
@@ -39,20 +39,38 @@ int     ft_countarg(t_token **lst)
     return (i);
 }
 
+int     ft_acct(t_token **lst, t_usr **usr)
+{
+    (void)*lst;
+    t_usr   *tmp;
+    char    str[INET_ADDRSTRLEN];
+
+    if (*usr)
+    {
+        tmp = *usr;
+        ft_putstr("Client socket: ");ft_putnbr(tmp->cs);ft_putendl("");
+        inet_ntop(AF_INET, &tmp->addr, str, INET_ADDRSTRLEN);
+        ft_putstr("Client IP: ");ft_putendl(str);
+        ft_putstr("Client account: ");ft_putendl(tmp->user);
+        ft_putstr("Password valid: ");ft_putnbr(tmp->password);ft_putendl("");
+        ft_putstr("pwd: ");ft_putendl(tmp->pwd);
+    }
+    return (1);
+}
 void    serverPI(char *str, t_usr **usr, int cs)
 {
     int             i;
     int             m;
     t_token               *lst;
-    static const t_cmd    cmd[4] = {{"USER", &ft_user}, {"PASS", &ft_password}, {"QUIT", &ft_logout}, {"LIST", &ft_list}};
+    static const t_cmd    cmd[5] = {{"USER", &ft_usr}, {"PASS", &ft_pass}, {"QUIT", &ft_logout}, {"LIST", &ft_list}, {"ACCT", ft_acct}};
 
     i = -1;
-    m = 4;
+    m = 5;
     if ((lst = parser(str)))
         while (++i < m)
         {
             if (!ft_strcmp(lst->str, cmd[i].cmd))
-                reply(cmd[i].f(&lst, usr, cs), cs);
+                reply(cmd[i].f(&lst, usr), cs);
         }
 
 }

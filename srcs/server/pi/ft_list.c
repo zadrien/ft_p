@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/10 11:11:41 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/12 16:27:11 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/19 15:42:44 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,58 +40,49 @@ char    **create_tab(t_token **lst)
     return (cmd);
 }
 
-void    send_client(int fd, int cs)
-{
-    int     r;
-    char    buf[8];
-    struct stat stat;
-    if (fork() == 0)
-    {
-        if (fstat(fd, &stat) == 0)
-        {
-            ft_putstr("Size of stream: ");
-            ft_putnbr(stat.st_size);
-            ft_putendl("");
-        }
-        while ((r = read(fd, buf, 7)) > 0)
-        {
-            buf[r] = '\0';
-            send(cs, buf, ft_strlen(buf), 0);
-        }
-        send(cs, "0xff", 1, 0);
-        exit(1);
-    }
-}
+// void    send_client(int fd, t_usr *usr)
+// {
+//     if (fork() == 0)
+//     {
+//         ascii_mode(usr);
+//         exit(-1);
+//     }
+// }
 
-int     ft_list(t_token **lst, t_usr **usr, int cs)
+int     ft_list(t_token **lst, t_usr **usr)
 {
-    (void)usr;
     pid_t           pid;
     char            **exec;
-    int             p[2];
+    int             sock;
+    // int             p[2];
     int             status;
     int             option = 0;
     struct rusage   rusage;
+    t_usr           *tmp;
 
+    tmp = *usr;
     ft_putendl_fd("LIST", 2);
-    if (check_user(usr, cs) == 230)
+    if (check_user(usr, tmp->cs) == 230)
     {
         exec = create_tab(&(*lst)->next);
-        if (!pipe(p))
-        {
+        // if (!pipe(p))
+        // {
+            sock = ascii_mode(tmp);
             if ((pid = fork()) == 0)
             {
-                close(p[0]);
-                dup2(p[1], STDOUT_FILENO);
+                // close(p[0]);
+                dup2(sock, STDOUT_FILENO);
                 execv(exec[0], exec);
             } else {
-                close(p[1]);
-                send_client(p[0], cs);
-                close(p[0]);
+                // close(p[1]);
+                // send_client(p[0], tmp);
+                // close(p[0]);
                 wait4(pid, &status, option, &rusage);
             }
-        }
+        // }
     }
+    // write(tmp->cs, '\0', 1);
+    close(sock);
     ft_putendl("End of listing");
     return (0);
 }

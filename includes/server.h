@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 13:34:02 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/10 11:37:46 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/19 11:50:28 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,9 @@
 
 # include "libft.h"
 
-typedef struct      s_usr
-{
-    int             cs;
-    char            *user;
-    int             password;
-    char            *pwd;
-    struct t_trans  *files;
-    struct s_usr    *next;
-}                   t_usr;
+# include "dtp.h"
+
+
 
 typedef struct      s_trans
 {
@@ -49,11 +43,11 @@ typedef struct      s_trans
 
 void    serverPI(char *str, t_usr **usr, int cs);
 
-int     ft_user(t_token **lst, t_usr **usr, int cs);
-int     ft_password(t_token **lst, t_usr **usr, int cs);
-int     ft_logout(t_token **lst, t_usr **usr, int cs);
+int     ft_usr(t_token **lst, t_usr **usr);
+int     ft_pass(t_token **lst, t_usr **usr);
+int     ft_logout(t_token **lst, t_usr **usr);
 
-int     ft_list(t_token **lst, t_usr **usr, int cs);
+int     ft_list(t_token **lst, t_usr **usr);
 
 int     user_reply(int code, char *msg, int cs);
 int     check_user(t_usr **usr, int cs);

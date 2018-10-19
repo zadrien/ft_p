@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/18 17:24:36 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/18 20:18:14 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/19 09:35:53 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,11 +108,11 @@ void    wait_res(int s)
             // attendre la connection
             if ((sock = data_sock(port)) != -1)
             {
-                if ((ss = accept(s, &addr, &len)))
+                if ((ss = accept(sock, &addr, &len)))
                 {
                     ft_putendl("Connect to dtp");
                     ft_putendl("RECV:");
-                    while ((r = recv(ss, buf, 1023, 0)))
+                    while ((r = recv(ss, buf, 1023, 0)) > 0)
                     {
                         buf[r] = '\0';
                         ft_putstr(buf);

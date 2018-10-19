@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 12:16:01 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/18 17:21:30 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/19 10:20:16 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,29 @@ void usage(char *str)
     exit(-1);
 }
 
-void    client_session(int cs)
+t_usr    *init_usr(int cs, struct sockaddr_in addr)
+{
+    t_usr   *tmp;
+    
+    if (!(tmp = (t_usr*)malloc(sizeof(t_usr))))
+        return (NULL);
+    tmp->cs = cs;
+    tmp->addr = addr.sin_addr;
+    tmp->user = NULL;
+    tmp->password = 0;
+    tmp->pwd = NULL;
+    tmp->files = NULL;
+    tmp->next = NULL;
+    return (tmp);
+}
+
+void    client_session(int cs, struct sockaddr_in addr)
 {
     int             r;
     char            buf[1024];
     t_usr           *usr;
 
-    usr = NULL;
+    usr = init_usr(cs, addr);
     while ((r = read(cs, buf, 1023)) > 0)
     {
         buf[r] = '\0';
@@ -35,11 +51,11 @@ void    client_session(int cs)
     close(cs);
 }
 
-void    init_fork(int cs)
+void    init_fork(int cs, struct sockaddr_in addr)
 {
     if (fork() == 0)
     {
-        client_session(cs);
+        client_session(cs, addr);
     }
 }
 
@@ -74,15 +90,15 @@ int     main(int ac, char **av)
     int             cs;
     int             socket;
     unsigned int    len;
-    struct sockaddr addr;
+    struct sockaddr_in addr;
 
     if (ac != 2)
         usage(av[0]);
     socket = init_server(ft_atoi(av[1]));
-    while ((cs = accept(socket, &addr, &len)) > 0)
+    while ((cs = accept(socket, (struct sockaddr*)&addr, &len)) > 0)
     {
         ft_putendl("New user");
-        init_fork(cs);
+        init_fork(cs, addr);
     }
     return (0);
 }

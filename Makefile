@@ -6,7 +6,7 @@
 #    By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/02 18:16:06 by zadrien           #+#    #+#              #
-#    Updated: 2018/10/10 11:37:57 by zadrien          ###   ########.fr        #
+#    Updated: 2018/10/19 11:44:42 by zadrien          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,8 +21,10 @@ OPATH= obj/
 HPATH= includes/ libft/
 INC= $(addprefix -I , $(HPATH))
 SFILES= server/main.c server/pi/serverPI.c server/pi/auth.c server/pi/auth_utils.c server/pi/ft_list.c \
+		dtp/revc.c dtp/send.c dtp/dtp-utils.c \
 
 CFILES= user/main.c user/pi/com_link.c user/pi/userPI.c \
+		dtp/revc.c dtp/send.c dtp/dtp-utils.c \
 
 OSFILES= $(SFILES:.c=.o)
 OCFILES= $(CFILES:.c=.o)
@@ -48,6 +50,7 @@ $(OPATH)%.o: $(CPATH)%.c $(HFILES)
 	@mkdir -p $(OPATH)user/pi
 	@mkdir -p $(OPATH)server/
 	@mkdir -p $(OPATH)server/pi
+	@mkdir -p $(OPATH)dtp
 
 	$(CC) -g -Wall -Werror -Wextra  $(INC) $< -c -o $@
 
