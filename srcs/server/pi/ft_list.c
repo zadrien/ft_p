@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/10 11:11:41 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/19 15:42:44 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/19 15:50:57 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,22 +67,24 @@ int     ft_list(t_token **lst, t_usr **usr)
         exec = create_tab(&(*lst)->next);
         // if (!pipe(p))
         // {
-            sock = ascii_mode(tmp);
-            if ((pid = fork()) == 0)
+            if (sock = ascii_mode(tmp))
             {
-                // close(p[0]);
-                dup2(sock, STDOUT_FILENO);
-                execv(exec[0], exec);
-            } else {
-                // close(p[1]);
-                // send_client(p[0], tmp);
-                // close(p[0]);
-                wait4(pid, &status, option, &rusage);
+                if ((pid = fork()) == 0)
+                {
+                    // close(p[0]);
+                    dup2(sock, STDOUT_FILENO);
+                    execv(exec[0], exec);
+                } else {
+                    // close(p[1]);
+                    // send_client(p[0], tmp);
+                    // close(p[0]);
+                    wait4(pid, &status, option, &rusage);
+                }
+                close(sock);
             }
         // }
     }
     // write(tmp->cs, '\0', 1);
-    close(sock);
     ft_putendl("End of listing");
     return (0);
 }
