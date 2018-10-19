@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/19 11:24:40 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/19 16:30:45 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/19 16:32:34 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int     revc(int s)
             }
             close(sock);
         } else {
-            ft_putendl("error: socket_receiver")
+            ft_putendl("error: socket_receiver");
         }
     }
     return (1);
