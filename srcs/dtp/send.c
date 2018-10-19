@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/19 11:06:53 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/19 15:43:11 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/19 16:07:12 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int     prepare_socket(t_usr *usr, int port)
     {
         if ((sock = socket(AF_INET, SOCK_STREAM, proto->p_proto)) != -1)
         {
+            if (setsockopt(sock, SOL_SOCKET, SO_REUSEPORT, &optval, sizeof(optval)) == -1)
+                ft_putendl_fd("ERROR SERSOCKOPT", 2);
             ft_putendl_fd("Data link: Socket created", 2);
             sin.sin_family = AF_INET;
             sin.sin_port = htons(port);
@@ -33,8 +35,6 @@ int     prepare_socket(t_usr *usr, int port)
                 ft_putendl_fd("Data link server: Connect error", 2);
                 return (-1);
             }
-            if (setsockopt(sock, SOL_SOCKET, SO_REUSEPORT, &optval, sizeof(optval)) == -1)
-                ft_putendl_fd("ERROR SERSOCKOPT", 2);
             ft_putendl_fd("Data link server: Connect success", 2);
             return (sock);
         }

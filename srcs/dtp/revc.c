@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/19 11:24:40 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/19 15:46:50 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/19 16:07:22 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int     socket_receiver(int port)
         ft_putendl_fd("data sock, socket creation error", 2);
         return (-1);
     }
-    if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval)) == -1)
+    if (setsockopt(sock, SOL_SOCKET, SO_REUSEPORT, &optval, sizeof(optval)) == -1)
         ft_putendl_fd("ERROR SERSOCKOPT", 2);
     sin.sin_family = AF_INET;
     sin.sin_port = htons(port);
