@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/19 11:06:53 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/19 16:07:12 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/19 16:59:40 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int     prepare_socket(t_usr *usr, int port)
     {
         if ((sock = socket(AF_INET, SOCK_STREAM, proto->p_proto)) != -1)
         {
-            if (setsockopt(sock, SOL_SOCKET, SO_REUSEPORT, &optval, sizeof(optval)) == -1)
+            if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval)) == -1)
                 ft_putendl_fd("ERROR SERSOCKOPT", 2);
             ft_putendl_fd("Data link: Socket created", 2);
             sin.sin_family = AF_INET;
@@ -59,10 +59,11 @@ int    ascii_mode(t_usr *usr)
 {
     int                 port;
     int                 sock;
-    static const int    in = 150;
+    int    in = 150;
     
-
-    send_code(usr->cs, in); // say client im in
+    ft_putnbr(usr->cs);ft_putendl("");
+    send(usr->cs, &in, sizeof(int), 0);
+    send_code(usr->cs, 150); // say client im in
     port = get_code(usr->cs);
     ft_putstr("DTP PORT: ");ft_putnbr(port);ft_putendl("");
 
