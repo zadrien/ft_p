@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/19 11:14:00 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/19 11:18:55 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/19 16:26:31 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int    get_code(int s)
     int     r;
 
     recv(s, &r, sizeof(int), 0);
+    ft_putnbr(r);ft_putendl("");
     return (r);
 }
 

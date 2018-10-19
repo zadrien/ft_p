@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/19 11:24:40 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/19 16:07:22 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/19 16:30:45 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int     revc(int s)
     if (get_code(s) == 150)
     {
         send_code(s, 4243);
-        if ((sock = socket_receiver(4243)))
+        if ((sock = socket_receiver(4243)) > 0)
         {
             if ((ds = accept(sock, &addr, &len)))
             {
@@ -69,6 +69,8 @@ int     revc(int s)
                 close(ds);
             }
             close(sock);
+        } else {
+            ft_putendl("error: socket_receiver")
         }
     }
     return (1);
