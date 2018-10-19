@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/19 11:24:40 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/19 16:35:49 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/19 16:39:35 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,10 @@ int     revc(int s)
         send_code(s, 4243);
         if ((sock = socket_receiver(4243)) > 0)
         {
+            ft_putendl("Socket created");
             if ((ds = accept(sock, &addr, &len)))
             {
+                ft_putendl("AFTER ACCEPT");
                 while ((r = recv(ds, buf, 7, 0)) > 0)
                 {
                     buf[r] = '\0';
