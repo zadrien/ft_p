@@ -6,11 +6,11 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/30 13:27:35 by zadrien           #+#    #+#             */
-/*   Updated: 2018/09/30 16:05:56 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/20 14:07:04 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ftp.h"
+#include "user.h"
 
 int     ft_countarg(t_token **lst)
 {
@@ -55,13 +55,13 @@ char    **create_tab(t_token **lst)
     return (cmd);
 }
 
-void    ft_lls(t_token **lst, int socket)
+int     ft_lls(t_token **lst, int socket)
 {
     (void)socket;
     pid_t   pid;
     char    **exec;
     int     status;
-    int     option = 0;
+    // int     option = 0;
     struct rusage rusage;
 
     ft_putendl_fd("lls", 2);
@@ -70,6 +70,9 @@ void    ft_lls(t_token **lst, int socket)
     {
         execv(exec[0], exec);
     } else {
-        wait4(pid, &status, option, &rusage);
+        wait4(pid, &status, WUNTRACED | WCONTINUED, &rusage);
     }
+    if (WIFEXITED(status) && !WEXITSTATUS(status))
+        return (1);
+    return (0);
 }

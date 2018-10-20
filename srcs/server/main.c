@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 12:16:01 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/19 10:20:16 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/20 12:47:00 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void    client_session(int cs, struct sockaddr_in addr)
     while ((r = read(cs, buf, 1023)) > 0)
     {
         buf[r] = '\0';
+        ft_putendl(buf);
         serverPI(buf, &usr, cs);
     }
     ft_putendl("End fork close socket");
@@ -56,12 +57,14 @@ void    init_fork(int cs, struct sockaddr_in addr)
     if (fork() == 0)
     {
         client_session(cs, addr);
+        exit(EXIT_FAILURE);
     }
 }
 
 int     init_server(int port)
 {
     int     sock;
+    int             optval = 1;
     struct protoent *proto;
     struct sockaddr_in  sin;
 
@@ -74,6 +77,8 @@ int     init_server(int port)
         ft_putendl_fd("socket creation error", 2);
         return (-1);
     }
+    if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval)) == -1)
+                ft_putendl_fd("ERROR SERSOCKOPT", 2);
     sin.sin_family = AF_INET;
     sin.sin_port = htons(port);
     sin.sin_addr.s_addr = htonl(INADDR_ANY);

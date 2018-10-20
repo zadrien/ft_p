@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 13:06:05 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/19 15:43:32 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/20 15:17:18 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int     wait_response(int s, int res)
 
     if (res)
     {
-        revc(s);
+        return (recept(s, NONE, PRINT));
         // while (read(s, buf, 7) > 0)
         // {
         //     buf[r] = '\0';
@@ -39,26 +39,6 @@ int     wait_response(int s, int res)
     return (r);
 }
 
-char    *ft_struct(char *cmd, t_token **arg)
-{
-    char    *line;
-    t_token *tmp;
-
-    line = ft_strdup(cmd);
-    if ((tmp = *arg))
-    {
-        line = ft_strjoinf(line, " ", 1);
-        while (tmp)
-        {
-            line = ft_strjoinf(line, tmp->str, 1);
-            if (tmp->next)
-                line = ft_strjoinf(line, " ", 1);
-            tmp = tmp->next;
-        }
-    }
-    ft_putendl(line);
-    return (line);
-}
 
 int    ft_username(t_token **lst, int s)
 {
@@ -133,10 +113,12 @@ int     userPI(char *str, int s)
     int                 i;
     int                 m;
     t_token             *lst;
-    static const t_pi   cmd[5] = {{"username", &ft_username}, {"password", &ft_password}, {"logout", &ft_logout}, {"ls", &ft_ls}, {"account", &ft_acct}};
+    static const t_pi   cmd[8] = {{"username", &ft_username}, {"password", &ft_password}, {"logout", &ft_logout},
+                                    {"ls", &ft_ls}, {"account", &ft_acct}, {"lls", &ft_lls}, {"lpwd", &ft_lpwd},
+                                    {"lcd", &ft_lcd}};
 
     i = -1;
-    m = 5;
+    m = 8;
     ft_putendl("ALLOR");
     if ((lst = parser(str)))
         while (++i < m)

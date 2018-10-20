@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/19 11:24:40 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/19 16:59:50 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/20 13:53:34 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,40 +44,40 @@ int     socket_receiver(int port)
     return (sock);
 }
 
-int     revc(int s)
+void    get_stream(int dtp, int fd, int print)
 {
-    int             r;
-    int             ds;
+    int     r;
+    char    buf[8];
+
+    while ((r = recv(dtp, buf, 7, 0)) > 0)
+    {
+        buf[r] = '\0';
+        print ? ft_putstr(buf) : write(fd, buf, 7);
+    }
+    print == 0 ? close(fd) : 1;
+}
+
+int     recept(int s, int fd, int print)
+{
+    int             dtp;
     int             sock;
-    char            buf[8];
-    socklen_t       len;
+    socklen_t      len;
     struct sockaddr addr;
 
     if (get_code(s) == 150)
     {
-        send_code(s, 4243);
-        if ((sock = socket_receiver(4243)) > 0)
+        send_code(s, 50042); // CHOOSE BETTER PORT
+        if ((sock = socket_receiver(50042)) > 0)
         {
-            ft_putendl("Socket created");
-            if ((ds = accept(sock, &addr, &len)))
+            if ((dtp = accept(sock, &addr, &len)))
             {
-                ft_putendl("AFTER ACCEPT");
-                while ((r = recv(ds, buf, 7, 0)) > 0)
-                {
-                    buf[r] = '\0';
-                    ft_putstr(buf);
-                }
-                ft_putendl("END");
+                get_stream(dtp, fd, print);
+                close(dtp);
+                close(sock);
                 if (get_code(s) == 226)
-                {
-                    close(sock);
-                    close(ds);
                     return (1);
-                }
             }
             close(sock);
-        } else {
-            ft_putendl("error: socket_receiver");
         }
     }
     return (0);

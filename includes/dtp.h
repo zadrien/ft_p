@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/19 11:32:36 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/19 15:42:09 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/20 14:14:40 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,12 @@
 
 #include "libft.h"
 
+enum print {
+    NONE = 0,
+    PRINT = 1,
+    GET = 2,
+};
+
 typedef struct      s_usr
 {
     int             cs;
@@ -39,8 +45,8 @@ typedef struct      s_usr
     struct s_usr    *next;
 }                   t_usr;
 
-int    ascii_mode(t_usr *usr);
-int     revc(int s);
+int     transmission(t_usr *usr, int get, int fd);
 int     get_code(int s);
 void    send_code(int s, int code);
+int     recept(int s, int fd, int print);
 #endif

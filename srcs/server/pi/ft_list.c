@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/10 11:11:41 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/19 16:34:42 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/20 13:52:47 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int     ft_list(t_token **lst, t_usr **usr)
         exec = create_tab(&(*lst)->next);
         // if (!pipe(p))
         // {
-            if ((sock = ascii_mode(tmp)) > 0)
+            if ((sock = transmission(tmp, GET, NONE)) > 0)
             {
                 if ((pid = fork()) == 0)
                 {
@@ -80,8 +80,8 @@ int     ft_list(t_token **lst, t_usr **usr)
                     // close(p[0]);
                     wait4(pid, &status, option, &rusage);
                 }
-                send_code(tmp->cs, 226);
                 close(sock);
+                return(226);
             }
         // }
     }

@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 11:44:41 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/05 13:55:40 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/20 10:51:41 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int     com_link(char *addr, char *port)
 {
     int                 p;
     int                 sock;
+    int                 optval = 1;
     struct protoent     *proto;
     struct sockaddr_in  sin;
 
@@ -24,6 +25,8 @@ int     com_link(char *addr, char *port)
     {
         if ((sock = socket(PF_INET, SOCK_STREAM, proto->p_proto)) != -1)
         {
+            if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval)) == -1)
+                ft_putendl_fd("ERROR SERSOCKOPT", 2);
             sin.sin_family = AF_INET;
             sin.sin_port = htons(p);
             sin.sin_addr.s_addr = inet_addr(addr);
