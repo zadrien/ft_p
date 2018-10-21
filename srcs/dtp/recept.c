@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   revc.c                                             :+:      :+:    :+:   */
+/*   recept.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/19 11:24:40 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/20 13:53:34 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/21 13:47:52 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int     socket_receiver(int port)
     sin.sin_addr.s_addr = htonl(INADDR_ANY);
     if (bind(sock, (const struct sockaddr *)&sin, sizeof(sin)) == -1)
     {
+        perror("bind()");
         ft_putendl_fd("data sock, bind error", 2);
         return (-1);
     }
@@ -44,7 +45,7 @@ int     socket_receiver(int port)
     return (sock);
 }
 
-void    get_stream(int dtp, int fd, int print)
+void    get_streame(int dtp, int fd, int print)
 {
     int     r;
     char    buf[8];
@@ -71,7 +72,7 @@ int     recept(int s, int fd, int print)
         {
             if ((dtp = accept(sock, &addr, &len)))
             {
-                get_stream(dtp, fd, print);
+                get_streame(dtp, fd, print);
                 close(dtp);
                 close(sock);
                 if (get_code(s) == 226)

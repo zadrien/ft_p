@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 12:48:21 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/19 10:52:28 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/21 15:18:02 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ typedef struct      s_cmd
 
 void    reply(int res, int cs)
 {
+    printf("Code send to client:%d\n", res);
     send(cs, &res, sizeof(int), 0);
 }
 
@@ -62,10 +63,12 @@ void    serverPI(char *str, t_usr **usr, int cs)
     int             i;
     int             m;
     t_token               *lst;
-    static const t_cmd    cmd[5] = {{"USER", &ft_usr}, {"PASS", &ft_pass}, {"QUIT", &ft_logout}, {"LIST", &ft_list}, {"ACCT", ft_acct}};
+    static const t_cmd    cmd[7] = {{"USER", &ft_usr}, {"PASS", &ft_pass}, {"QUIT", &ft_logout},
+                                    {"LIST", &ft_list}, {"ACCT", ft_acct}, {"RETR", &s_get}, {"STOU", &s_put}};
 
     i = -1;
-    m = 5;
+    m = 7;
+    ft_putendl(str);
     if ((lst = parser(str)))
         while (++i < m)
         {

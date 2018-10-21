@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 13:06:05 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/20 15:17:18 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/21 15:18:38 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,12 +113,12 @@ int     userPI(char *str, int s)
     int                 i;
     int                 m;
     t_token             *lst;
-    static const t_pi   cmd[8] = {{"username", &ft_username}, {"password", &ft_password}, {"logout", &ft_logout},
+    static const t_pi   cmd[10] = {{"username", &ft_username}, {"password", &ft_password}, {"logout", &ft_logout},
                                     {"ls", &ft_ls}, {"account", &ft_acct}, {"lls", &ft_lls}, {"lpwd", &ft_lpwd},
-                                    {"lcd", &ft_lcd}};
+                                    {"lcd", &ft_lcd}, {"get", &c_get}, {"put", &c_put}};
 
     i = -1;
-    m = 8;
+    m = 10;
     ft_putendl("ALLOR");
     if ((lst = parser(str)))
         while (++i < m)

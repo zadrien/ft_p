@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/19 11:14:00 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/20 18:11:35 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/21 14:03:15 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int    get_code(int s)
     r = 0;
     if (recv(s, &r, sizeof(int), 0) == -1)
         perror("recv");
+    printf("get_code(s) =  %d\n", r);    
     return (r);
 }
 
@@ -87,7 +88,7 @@ int     listen_socket(int port)
             sin.sin_addr.s_addr = htonl(INADDR_ANY);
             if (bind(sock, (const struct sockaddr*)&sin, sizeof(sin)) == -1)
                 return (-2);
-            listen(sock, 1);
+            listen(sock, 40);
             return (sock);
         }
     return (0);
@@ -97,9 +98,9 @@ int     accept_socket(int sock)
 {
     int                 cs;
     socklen_t           len;
-    struct sockaddr_in  addr;
+    struct sockaddr_in     addr;
 
-    if ((cs = accept(sock, (const struct sockaddr*)&addr, &len)))
+    if ((cs = accept(sock, (struct sockaddr*)&addr, &len)))
         return (cs);
     return (0);
 }

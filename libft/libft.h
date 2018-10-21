@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/19 15:32:31 by zadrien           #+#    #+#             */
-/*   Updated: 2018/09/20 13:35:28 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/21 12:36:15 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,31 @@ typedef struct		s_list
 	size_t			content_size;
 	struct s_list	*next;
 }					t_list;
+
+typedef struct		s_env
+{
+	char			*var;
+	char			*value;
+	struct s_env	*next;
+}					t_env;
+
+t_env   			*new_env(char **env);
+int     			add_env(t_env **env, char **var);
+t_env				*find_node(t_env **env, char *var, char *value);
+
+
+typedef struct		s_token
+{
+	char			*str;
+	int				*type;
+	struct s_token	*next;
+}					t_token;
+
+typedef	struct		s_key
+{
+	int				key;
+	void			(*f)(t_token** ,char**, char*, int*);
+}					t_key;
 
 t_list				*ft_lstnew(void const *content, size_t content_size);
 void				ft_lstdelone(t_list **alst, void (*del)(void *, size_t));
@@ -91,34 +116,8 @@ char				**ft_split(char const *s);
 void				ft_putendn(int i);
 int					count_tab(char **ta);
 char				*ft_strjoinf(char *s1, char *s2, int w);
-
-
-typedef struct		s_env
-{
-	char			*var;
-	char			*value;
-	struct s_env	*next;
-}					t_env;
-
-t_env   			*new_env(char **env);
-int     			add_env(t_env **env, char **var);
-t_env				*find_node(t_env **env, char *var, char *value);
-
-
-typedef struct		s_token
-{
-	char			*str;
-	int				*type;
-	struct s_token	*next;
-}					t_token;
-
-typedef	struct		s_key
-{
-	int				key;
-	void			(*f)(t_token** ,char**, char*, int*);
-}					t_key;
-
+t_token				*parser(char *aastr);
 void				init_token(t_token **tok);
 void				free_token(t_token **token);
-t_token				*parser(char *str);
+int					ft_countarg(t_token **lst);
 #endif

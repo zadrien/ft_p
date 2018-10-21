@@ -1,19 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ls.c                                               :+:      :+:    :+:   */
+/*   ft_countarg.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/02 16:58:12 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/02 16:59:52 by zadrien          ###   ########.fr       */
+/*   Created: 2018/10/21 12:32:36 by zadrien           #+#    #+#             */
+/*   Updated: 2018/10/21 12:32:42 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ftp.h"
+#include "libft.h"
 
-void    ft_ls(t_token **lst, t_usr **usr)
+int     ft_countarg(t_token **lst)
 {
-    tmp
-    if (*usr)
+    int i;
+    t_token *tmp;
+
+    i = 0;
+    if ((tmp = *lst))
+        while (tmp)
+        {
+            i++;
+            tmp = tmp->next;
+        }
+    return (i);
 }

@@ -6,26 +6,11 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/30 13:27:35 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/20 14:07:04 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/21 12:33:26 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "user.h"
-
-int     ft_countarg(t_token **lst)
-{
-    int i;
-    t_token *tmp;
-
-    i = 0;
-    if ((tmp = *lst))
-        while (tmp)
-        {
-            i++;
-            tmp = tmp->next;
-        }
-    return (i);
-}
 
 char    **create_tab(t_token **lst)
 {

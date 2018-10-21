@@ -6,7 +6,7 @@
 #    By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/03 20:05:29 by zadrien           #+#    #+#              #
-#    Updated: 2018/09/20 11:29:56 by zadrien          ###   ########.fr        #
+#    Updated: 2018/10/21 12:33:07 by zadrien          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,7 @@ SRC =	ft_atoi.c ft_bzero.c ft_isalnum.c ft_isalpha.c ft_isascii.c \
 		ft_lstmap.c ft_putnbroct.c get_next_line.c ft_errormsg.c ft_split.c	\
 		ft_putendn.c count_tab.c find_node.c	\
 		parser.c free_token.c new_env.c add_env.c\
+		ft_countarg.c \
 
 OBJS = $(SRC:.c=.o)
 
