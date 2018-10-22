@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 13:34:02 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/21 15:19:06 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/22 16:16:47 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <sys/wait.h>
 # include <sys/stat.h>
 # include <fcntl.h>
+# include <dirent.h>
 
 # include "libft.h"
 
@@ -43,8 +44,6 @@ typedef struct      s_trans
 
 void    serverPI(char *str, t_usr **usr, int cs);
 
-int     ft_usr(t_token **lst, t_usr **usr);
-int     ft_pass(t_token **lst, t_usr **usr);
 int     ft_logout(t_token **lst, t_usr **usr);
 int     s_get(t_token **lst, t_usr **usr);
 int     s_put(t_token **lst, t_usr **usr);
@@ -52,5 +51,14 @@ int     ft_list(t_token **lst, t_usr **usr);
 
 int     user_reply(int code, char *msg, int cs);
 int     check_user(t_usr **usr, int cs);
-int     verify_auth(char *str);
+int     verify_auth(t_usr **usr, char *str);
+
+/**
+ * Authentificaton
+ */
+int     auth(t_token **lst, t_usr **usr);
+int     pass(t_token **lst, t_usr **usr);
+int     create(t_token **lst, t_usr **usr);
+int     init_pass(t_token **lst, t_usr **usr);
+
 #endif

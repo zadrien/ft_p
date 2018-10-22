@@ -6,7 +6,7 @@
 #    By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/02 18:16:06 by zadrien           #+#    #+#              #
-#    Updated: 2018/10/21 15:19:36 by zadrien          ###   ########.fr        #
+#    Updated: 2018/10/22 15:45:47 by zadrien          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,11 +20,15 @@ CPATH= srcs/
 OPATH= obj/
 HPATH= includes/ libft/
 INC= $(addprefix -I , $(HPATH))
-SFILES= server/main.c server/pi/serverPI.c server/pi/auth.c server/pi/auth_utils.c server/pi/ft_list.c \
-		dtp/recept.c dtp/send.c dtp/dtp-utils.c dtp/dtp-server.c dtp/stream-handler.c \
+SFILES= server/main.c \
+		server/pi/serverPI.c server/pi/auth.c server/pi/auth_utils.c server/pi/auth_creat.c \
+		server/pi/ft_list.c \
 		server/dtp/get-server.c server/dtp/put-server.c \
+		dtp/recept.c dtp/send.c dtp/dtp-utils.c dtp/dtp-server.c dtp/stream-handler.c \
 
-CFILES= user/main.c user/pi/com_link.c user/pi/userPI.c user/pi/lls.c user/pi/lpwd.c user/pi/lcd.c \
+CFILES= user/main.c \
+		user/pi/com_link.c user/pi/userPI.c user/pi/lls.c user/pi/lpwd.c \
+		user/pi/lcd.c /user/pi/auth.c \
 		dtp/recept.c dtp/send.c dtp/dtp-utils.c dtp/dtp-client.c dtp/stream-handler.c \
 		user/pi/pi-utils.c user/dtp/get-client.c user/dtp/put-client.c \
 

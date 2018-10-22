@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 13:06:05 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/21 15:18:38 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/22 17:33:48 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,19 @@ int    ft_username(t_token **lst, int s)
 
 int    ft_password(t_token **lst, int s)
 {
-    (void)s;
+    int    r;
     char                *line;
     char   buf[5] = "PASS\0";
     line = ft_struct(buf, &(*lst)->next);
     send(s, line, ft_strlen(line), 0);
     ft_strdel(&line);
-    return (wait_response(s, 0));
+    r = get_code(s);
+    if (r == 230) {
+        return (1);
+    } else if (r == 650) {
+        ft_putendl_fd("Please use init command", 2);
+    }
+    return (0);
 }
 
 int     ft_logout(t_token **lst, int s)
@@ -113,12 +119,12 @@ int     userPI(char *str, int s)
     int                 i;
     int                 m;
     t_token             *lst;
-    static const t_pi   cmd[10] = {{"username", &ft_username}, {"password", &ft_password}, {"logout", &ft_logout},
+    static const t_pi   cmd[11] = {{"username", &auth}, {"password", &ft_password}, {"init", &create_pass}, {"logout", &ft_logout},
                                     {"ls", &ft_ls}, {"account", &ft_acct}, {"lls", &ft_lls}, {"lpwd", &ft_lpwd},
                                     {"lcd", &ft_lcd}, {"get", &c_get}, {"put", &c_put}};
 
     i = -1;
-    m = 10;
+    m = 11;
     ft_putendl("ALLOR");
     if ((lst = parser(str)))
         while (++i < m)

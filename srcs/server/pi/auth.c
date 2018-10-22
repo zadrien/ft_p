@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/09 12:17:34 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/19 10:31:44 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/22 17:56:19 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,63 +14,64 @@
 
 int    co_attempt(t_usr **usr, char *name)
 {
-    char    *str;
+    DIR     *dir;
+    char    *path;
     t_usr   *tmp;
 
     tmp = *usr;
-    str = ft_strjoinf("./usr/", name, 0);
-    ft_putendl(str);
-    if (chdir(str) != -1)
+    path = ft_strjoinf("./usr/", name, 0);
+    ft_putendl(path);
+    if ((dir = opendir(path)))
     {
+        closedir(dir);
+        ft_strdel(&path);
         tmp->user = ft_strdup(name);
-        tmp->pwd = getcwd(NULL, 1023);
-        ft_putendl_fd("Directory changed", 2);
-        ft_putendl_fd("User name okay, need password", 2);
         return (331);
     }
-    ft_putendl_fd("Directory doesn't exist", 2);
+    ft_strdel(&path);
     return (332);
 }
 
-int     ft_usr(t_token **lst, t_usr **usr)
+int     auth(t_token **lst, t_usr **usr)
 {
-    t_usr   *tmp;
+    t_token *tmp;
 
-    if ((tmp = *usr))
+    if (!(*usr)->user)
     {
-        if (!tmp->user)
+        tmp = (*lst)->next;
+        if (tmp)
         {
-            if ((ft_countarg(&(*lst)->next)) == 1)
-            {
-                return (co_attempt(usr, (*lst)->next->str));
-            }
-        } else if (tmp->password == 1) {
+            if (ft_countarg(&tmp) == 1)
+                return (co_attempt(usr, tmp->str));
+        } else if ((*usr)->password) {
             return (230);
-        } else {
-            ft_putendl_fd("User name okay, need password", 2);
-            return (331);
         }
-    }
-    ft_putendl_fd("t_usr struct null", 2);
-    return (-2); // to change
+    } else
+        return (331);
+    return (332);
 }
 
-int     ft_pass(t_token **lst, t_usr **usr)
+int     pass(t_token **lst, t_usr **usr)
 {
-    t_usr   *tmp;
-
-    if ((tmp = *usr))
+    int     r;
+    t_token *tmp;
+    
+    tmp = (*lst)->next;
+    if (tmp)
     {
-        if (tmp->user && !tmp->password)
+        if ((*usr)->user && !(*usr)->password)
         {
-            if (ft_countarg(&(*lst)->next) == 1)
+            if (ft_countarg(&tmp) == 1)
             {
-                if (verify_auth((*lst)->next->str))
+                if ((r = verify_auth(usr, tmp->str)) == 1)
                 {
-                    tmp->password = 1;
+                    (*usr)->password = 1;
                     return (230);
-                }
+                } else if (r == 650)
+                    return (650);
             }
+        } else if ((*usr)->user && (*usr)->password) {
+            return (230); // voir cas si les deux sont nul donc condition vrai
         }
     }
     return (530);

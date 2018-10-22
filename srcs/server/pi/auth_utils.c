@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   user.c                                             :+:      :+:    :+:   */
+/*   auth_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/09 10:49:12 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/09 12:18:34 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/22 17:53:44 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,24 +40,41 @@ int     check_user(t_usr **usr, int cs)
     }
 }
 
-int     verify_auth(char *str)
+int     verify_auth(t_usr **usr, char *str)
 {
     int     fd;
     char    *line;
+    char    *path;
+    char    *file;
+    t_usr   *tmp;
+    
 
-    if ((fd = open("auth", O_RDONLY)))
+    tmp = *usr;
+    path = NULL;
+    path = ft_strjoinf("./usr/", tmp->user, 0);
+    file = ft_strjoinf(path, "/auth", 0);
+    if ((fd = open(file, O_RDONLY)) > 0)
     {
+        ft_strdel(&file);
         if (get_next_line(fd, &line) > 0)
         {
-            ft_putendl(line);
             if (!ft_strcmp(str, line))
             {
                 ft_strdel(&line);
                 close(fd);
-                return (1);
-            }
-            close(fd);
+                if (chdir(path) != -1)
+                {
+                    ft_strdel(&path);
+                    tmp->pwd = getcwd(NULL, 1023);
+                    return (1);
+                }
+            } else
+                close(fd);
         }
+    } else {
+        ft_strdel(&path);
+        return (650);
     }
+    ft_strdel(&path);
     return (0);
 }

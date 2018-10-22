@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 13:17:40 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/21 15:18:52 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/22 17:15:34 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,13 @@ int     ft_lcd(t_token **lst, int socket);
 int     c_get(t_token **lst, int s);
 int     c_put(t_token **lst, int s);
 char    *ft_struct(char *cmd, t_token **arg);
+
+/**
+ * Authentification
+*/
+int     auth(t_token **lst, int s);
+int     create_user(int s, char *name);
+int     create_password(int s, char *pass);
+int     create_pass(t_token **lst, int s);
+
 #endif

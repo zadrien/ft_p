@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 12:48:21 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/21 15:18:02 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/22 16:04:50 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,11 @@ void    serverPI(char *str, t_usr **usr, int cs)
     int             i;
     int             m;
     t_token               *lst;
-    static const t_cmd    cmd[7] = {{"USER", &ft_usr}, {"PASS", &ft_pass}, {"QUIT", &ft_logout},
+    static const t_cmd    cmd[9] = {{"USER", &auth}, {"PASS", &pass}, {"CREAT", &create}, {"INIT", &init_pass}, {"QUIT", &ft_logout},
                                     {"LIST", &ft_list}, {"ACCT", ft_acct}, {"RETR", &s_get}, {"STOU", &s_put}};
 
     i = -1;
-    m = 7;
+    m = 9;
     ft_putendl(str);
     if ((lst = parser(str)))
         while (++i < m)
@@ -76,4 +76,5 @@ void    serverPI(char *str, t_usr **usr, int cs)
                 reply(cmd[i].f(&lst, usr), cs);
         }
 
+// suppression list chaine
 }
