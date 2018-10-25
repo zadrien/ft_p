@@ -6,7 +6,7 @@
 #    By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/02 18:16:06 by zadrien           #+#    #+#              #
-#    Updated: 2018/10/24 18:04:18 by zadrien          ###   ########.fr        #
+#    Updated: 2018/10/25 18:30:13 by zadrien          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ OPATH= obj/
 HPATH= includes/ libft/
 INC= $(addprefix -I , $(HPATH))
 SFILES= main.c \
+		arrow.c init.c misc_init.c misc_arrow.c \
 
 OSFILES= $(SFILES:.c=.o)
 

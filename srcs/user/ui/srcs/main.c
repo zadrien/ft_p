@@ -6,117 +6,108 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/24 17:37:50 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/24 19:18:27 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/25 18:17:05 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cmd_line.h"
 
 
-int     usefull(int i)
-{
-    return (write(2, &i, 1));
-}
+
 
 void    cursor_display(int mod)
 {
     tputs(tgetstr((mod ? "ve" : "vi"), NULL), 1, usefull);
 }
 
-void    change_value(t_edit **edit, int i)
-{
-    t_edit  *tmp;
 
-    tmp = *edit;
-    if (i)
-    {
-        tmp->term.c_lflag &= ~(ICANON | ECHO);
-        tmp->term.c_cc[VMIN] = 1;
-        tmp->term.c_cc[VTIME] = 0;
-    } else if (i == 0)
-    {
-        tmp->term.c_lflag |= ~(ICANON | ECHO);
-        tmp->term.c_cc[VMIN] = 1;
-        tmp->term.c_cc[VTIME] = 0;
-    }
+int     return_line(t_line *line)
+{
+    write(1, "\n", 1);
+    (void)line;
+    return (1);
+}
+int     spec_char(t_line *line)
+{
+    // (void)line;
+    // int                     i;
+    int                     c;
+    // int                     m = 3;
+    // static const t_input    in[3] = {{AR_RIGHT, &cm_right}, {AR_LEFT, &cm_left}, {ENTER, &return_line}};
+
+    // i = -1;
+    c = *(int*)line->buf;
+    printf("%d\n", c);
+    printf("%d | %d | %d | %d\n", line->buf[0], line->buf[1], line->buf[2], line->buf[3]);
+    if (line->buf[0] == 10)
+        return (1);
+    // while (++i < m)
+    // {
+    //     if (c == in[i].key)
+    //         return (in[i].f(line));
+    // }
+    return (0);
 }
 
-int     init_term(t_edit **edit, int i)
+int     cursor_motion(t_line *line)
 {
-    t_edit  *tmp;
+    int         i;
+    static const t_input    in[2] = {{AR_RIGHT, &cm_right}, {AR_LEFT, &cm_left}};
 
-    tmp = *edit;
-    if (tmp)
+    i = -1;
+    while (++i < 2)
     {
-        if (tgetent(NULL, tmp->name_term) == -1)
-            return (-1);
-        if (tcgetattr(0, &(tmp)->term) == -1)
-            return (-1);
-        change_value(&tmp, i);
-        if (tcsetattr(0, TCSANOW, &(tmp)->term) == -1)
-            return (-1);
-        return (1);
+        if (line->buf[2] == in[i].key)
+            return (in[i].f(line));
     }
     return (0);
 }
 
-t_edit     *init_cmd_line(void)
+int    keyboard(t_line *line)
 {
-    t_edit  *tmp;
+    int                     i;
+    static const t_input    ref[1] = {{ENTER, &return_line}};
 
-    if (!(tmp = (t_edit*)malloc(sizeof(t_edit))))
-        return (NULL);
-    if (!(tmp->line = (char*)malloc(sizeof(char) * 50)))
-        return (NULL);
-    ft_bzero(tmp->line, 50);
-    if ((tmp->name_term = getenv("TERM")) == NULL)
-        return (NULL);
-    return (tmp);
-}
-
-int     get_key(void)
-{
-    int     r;
-    char    buf[5];
-
-    r = read(0, buf, 4);
-    buf[r] = '\0';
-    return (*(int*)buf);
-}
-
-int     motion(t_edit **line, int   key)
-{
-    t_edit  *tmp;
-    tmp = *line;
-    if (key == ??)
+    i = -1;
+    while (++i < 1)
     {
-
-    } else if (key == ??) {
-
+        if (line->buf[0] == ref[i].key)
+            return (ref[i].f(line));
     }
-    printf("x=%d y=%d\n", tmp->x, tmp->y);
+    if (line->buf[0] >= 32 && line->buf[0] <= 126)
+        print_char(line);
+    else
+        return (cursor_motion(line));
+    return (0);
 }
-char     start_line(t_edit **line, int display, int offset)
-{
-    int     key;
-    t_edit  *tmp;
 
-    tmp = *line;
-    if (tmp)
+void    start_line(int display)
+{
+    t_line  *line;
+
+    line = init_line(3);
+    display == OFF ? cursor_display(OFF) : 0;
+    ft_putstr_fd("$> ", 2);
+    while (1)
     {
-        tmp->x = offset;
-        display == OFF ? cursor_display(line, OFF) : 0;
-        while (1)
+        read(0, line->buf, 6);
+        if (keyboard(line))
         {
+            printf("line=%s\n", line->str);
+            if (line->cur < line->x)
+                printf("cursor position=%d character=[%c]\n", line->cur, line->str[line->cur]);
+            line->x = 0;
+            line->cur = 0;
+            ft_bzero(line->str, 50);
             ft_putstr_fd("$> ", 2);
-            key = get_key();
         }
+        // motion(line, key, offset);
     }
 }
 
 int     main(int ac, char **av)
 {
-    int     key;
+    // int     key;
     t_edit  *edit;
 
     if (ac == 1 && av)
@@ -124,14 +115,6 @@ int     main(int ac, char **av)
         if (!(edit = init_cmd_line()))
             return (0);
         if (init_term(&edit, 1))
-        {
-            ft_putendl("SUCCESS");
-            ft_putstr_fd("$> ", 2);
-            while (1)
-            {
-                key = get_key();
-                write(1, &key, 1);
-            }
-        }
+            start_line(ON);
     }
 }

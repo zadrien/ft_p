@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/09 12:17:34 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/22 17:56:19 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/22 18:06:02 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int    co_attempt(t_usr **usr, char *name)
 
     tmp = *usr;
     path = ft_strjoinf("./usr/", name, 0);
-    ft_putendl(path);
     if ((dir = opendir(path)))
     {
         closedir(dir);
@@ -92,4 +91,4 @@ int     ft_logout(t_token **lst, t_usr **usr)
         return (1);
     }
     return (0);
-} // to develop
+} // to develop // find a way to return to root directory

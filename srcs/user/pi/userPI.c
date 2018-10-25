@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 13:06:05 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/22 17:33:48 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/22 18:14:26 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,17 @@ int     ft_acct(t_token **lst, int s)
     ft_strdel(&line);
     return (wait_response(s, 0));
 }
+
+int     quit_client(char **str, t_token **lst, int s)
+{
+    // verifier que des transfert ne sont pas en cours
+      ft_strdel(str);
+    // free_lst_token(lst);
+    close(s);
+    ft_putendl("quit client");
+    exit(EXIT_SUCCESS);
+}
+
 int     userPI(char *str, int s)
 {
     int                 i;
@@ -123,7 +134,7 @@ int     userPI(char *str, int s)
                                     {"ls", &ft_ls}, {"account", &ft_acct}, {"lls", &ft_lls}, {"lpwd", &ft_lpwd},
                                     {"lcd", &ft_lcd}, {"get", &c_get}, {"put", &c_put}};
 
-    i = -1;
+    i = 0;
     m = 11;
     ft_putendl("ALLOR");
     if ((lst = parser(str)))
@@ -131,6 +142,9 @@ int     userPI(char *str, int s)
         {
             if (!ft_strcmp(lst->str, cmd[i].cmd))
                 return (cmd[i].f(&lst, s));
+            i++;
+            if (i == m && !ft_strcmp(lst->str, "quit"))
+                quit_client(&str, &lst, s);
         }
     return (0);
 }

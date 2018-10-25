@@ -6,7 +6,7 @@
 #    By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/02 18:16:06 by zadrien           #+#    #+#              #
-#    Updated: 2018/10/22 15:45:47 by zadrien          ###   ########.fr        #
+#    Updated: 2018/10/24 17:37:08 by zadrien          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -76,3 +76,4 @@ re: fclean all
 norme:
 		@norminette srcs/**/**.[ch]
 		@norminette libft/*.[ch]
+

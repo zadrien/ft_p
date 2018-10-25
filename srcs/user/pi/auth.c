@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/22 10:04:26 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/22 18:02:39 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/24 16:27:42 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ int     ask_create(int s, char *name)
 {
     char    *line;
 
-    ft_putstr_fd("Would you like to create it [Y/n]? ", 2);
+    ft_putstr_fd("Would you like to create it? [Y/n]:", 2);
     while (get_next_line(1, &line) > 0)
     {
         if (!ft_strcmp(line, "Y"))
@@ -159,7 +159,7 @@ int     ask_create(int s, char *name)
         } else {
             ft_strdel(&line);
             ft_putendl("");
-            ft_putstr_fd("Would you like to create it [Y/n]? ", 2);
+            ft_putstr_fd("Would you like to create it? [Y/n]: ", 2);
         }
     }
     return (0);

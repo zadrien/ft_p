@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/24 17:38:59 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/24 19:05:52 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/25 18:30:02 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,32 @@
 # include <signal.h>
 # include "libft.h"
 
+# define CM_GRP 27
+# define CTRL_D 4
+# define ENTER 10
+# define TAB 9
+# define DEL 127
+
+/**
+ * SECOND CHECKING CM_GRP
+ */
+# define INSERT 50
+# define DEL_FW 51
+# define PGUP 53
+# define PGDN 54
+# define AR_RIGHT 67
+# define AR_LEFT 68
+# define AR_UP 65
+# define AR_DW 66
+# define HOME 72
+# define END 70
+
 enum on_off
 {
     OFF = 0,
     ON = 1
 };
- 
+
 typedef struct		s_choise
 {
 	char			*str;
@@ -40,15 +60,51 @@ typedef struct		s_choise
 	struct s_choise	*next;
 }					t_ch;
 
+typedef struct		s_line
+{
+	char			*str;
+	char			buf[6];
+	int				x;
+	int				y;
+	int				cur;
+	int				max;
+	int				offset;
+	size_t			len;
+
+}					t_line;
+
 typedef struct		s_edit
 {
-    char            *line;
-    int             x;
-    int             y;
 	t_ch			*select;
 	char			*name_term;
 	struct termios	term;
 }					t_edit;
+
+typedef struct      s_input
+{
+    int     key;
+    int     (*f)(t_line *line);
+}                   t_input;
+
+
+int     init_term(t_edit **edit, int i);
+t_edit	*init_cmd_line(void);
+t_line  *init_line(int offset);
+void    change_value(t_edit **edit, int i);
+int     window_size(void);
+int     usefull(int i);
+
+
+/**
+ * Arrow input
+*/
+int     cm_left(t_line *line);
+int     cm_right(t_line *line);
+int     print_char(t_line *line);
+int     replace_cursor(t_line *line, int mode);
+int     insert_char(t_line *line);
+int     print_char(t_line *line);
+int    realloc_line(t_line *line);
 
 
 #endif
