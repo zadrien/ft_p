@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/24 17:37:50 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/25 18:17:05 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/26 06:01:22 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,10 +95,13 @@ void    start_line(int display)
         {
             printf("line=%s\n", line->str);
             if (line->cur < line->x)
-                printf("cursor position=%d character=[%c]\n", line->cur, line->str[line->cur]);
+                printf("cursor position=%zd character=[%c]\n", line->cur, line->str[line->cur]);
+            printf("line->cur = %zd | line->x = %zd | line->y = %zd\n", line->cur, line->x, line->y);
             line->x = 0;
             line->cur = 0;
-            ft_bzero(line->str, 50);
+            line->y = 0;
+            line->len = 0;
+            ft_bzero(line->str, line->str_len);
             ft_putstr_fd("$> ", 2);
         }
         // motion(line, key, offset);

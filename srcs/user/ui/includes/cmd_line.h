@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/24 17:38:59 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/25 18:30:02 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/26 05:52:11 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,12 @@ typedef struct		s_line
 {
 	char			*str;
 	char			buf[6];
-	int				x;
-	int				y;
-	int				cur;
-	int				max;
-	int				offset;
+	size_t			x;
+	size_t			y;
+	size_t			max;
+	size_t			offset;
+	size_t			cur;
+	size_t			str_len;
 	size_t			len;
 
 }					t_line;

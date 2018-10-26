@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 14:38:42 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/25 18:18:05 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/26 06:57:32 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,13 @@ t_line  *init_line(int offset)
     if (!(tmp->str = (char*)malloc(sizeof(char) * 50)))
         return (NULL);
     ft_bzero(tmp->str, 50);
-    tmp->len = 50;
+    tmp->str_len = 50;
+    tmp->len = 0;
     tmp->x = 0;
     tmp->y = 0;
     tmp->cur = 0;
     tmp->max = window_size();
+    printf("%zd\n", tmp->max);
     tmp->offset = offset;
     return (tmp);
 }
