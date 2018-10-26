@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/24 17:38:59 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/26 05:52:11 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/26 12:04:44 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ int     replace_cursor(t_line *line, int mode);
 int     insert_char(t_line *line);
 int     print_char(t_line *line);
 int    realloc_line(t_line *line);
+int     old_pos(t_line *line, size_t len);
 
 
 #endif

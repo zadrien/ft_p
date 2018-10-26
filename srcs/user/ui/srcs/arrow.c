@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 14:39:49 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/26 07:31:20 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/26 12:03:24 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ int     cm_left(t_line *line)
             }
             line->x--;
             tputs(tgoto(tgetstr("up", NULL), line->x, line->y), 1, usefull);
-            // tputs(tgoto(tgetstr("do", NULL), line->x, line->y), 1, usefull);
             replace_cursor(line, END);           
         } else {
             line->x--;
@@ -65,8 +64,16 @@ int     cm_right(t_line *line)
                 tputs(tgoto(tgetstr("cr", NULL), line->x, line->y), 1, usefull);
             }
         } else if (line->y > 0) {
-            line->x++;
-            tputs(tgoto(tgetstr("nd", NULL), line->x, line->y), 1, usefull);
+            if (line->x == line->max)
+            {
+                line->x = 0;
+                line->y++;
+                tputs(tgoto(tgetstr("do", NULL), line->x, line->y), 1, usefull);
+                tputs(tgoto(tgetstr("cr", NULL), line->x, line->y), 1, usefull);
+            } else {
+                line->x++;
+                tputs(tgoto(tgetstr("nd", NULL), line->x, line->y), 1, usefull);
+            }
         }
     }
     return (0);
