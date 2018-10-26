@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/24 17:37:50 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/26 06:01:22 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/26 12:57:50 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,10 @@ int     cursor_motion(t_line *line)
 int    keyboard(t_line *line)
 {
     int                     i;
-    static const t_input    ref[1] = {{ENTER, &return_line}};
+    static const t_input    ref[2] = {{ENTER, &return_line}, {DEL, &del_char}};
 
     i = -1;
-    while (++i < 1)
+    while (++i < 2)
     {
         if (line->buf[0] == ref[i].key)
             return (ref[i].f(line));
@@ -94,8 +94,7 @@ void    start_line(int display)
         if (keyboard(line))
         {
             printf("line=%s\n", line->str);
-            if (line->cur < line->x)
-                printf("cursor position=%zd character=[%c]\n", line->cur, line->str[line->cur]);
+            printf("cursor position=%zd character=[%c]\n", line->cur, line->str[line->cur]);
             printf("line->cur = %zd | line->x = %zd | line->y = %zd\n", line->cur, line->x, line->y);
             line->x = 0;
             line->cur = 0;

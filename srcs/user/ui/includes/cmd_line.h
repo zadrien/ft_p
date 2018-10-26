@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/24 17:38:59 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/26 12:04:44 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/26 12:49:09 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,5 +108,6 @@ int     print_char(t_line *line);
 int    realloc_line(t_line *line);
 int     old_pos(t_line *line, size_t len);
 
-
+int     del_char(t_line *line);
+int     multi_pos(t_line *line, size_t len);
 #endif
