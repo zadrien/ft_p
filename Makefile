@@ -6,7 +6,7 @@
 #    By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/02 18:16:06 by zadrien           #+#    #+#              #
-#    Updated: 2018/10/24 17:37:08 by zadrien          ###   ########.fr        #
+#    Updated: 2018/10/27 12:18:28 by zadrien          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,7 @@ CFILES= user/main.c \
 		user/pi/lcd.c /user/pi/auth.c \
 		dtp/recept.c dtp/send.c dtp/dtp-utils.c dtp/dtp-client.c dtp/stream-handler.c \
 		user/pi/pi-utils.c user/dtp/get-client.c user/dtp/put-client.c \
+		user/ui/ui.c user/ui/arrow.c user/ui/init.c user/ui/misc_init.c user/ui/misc_arrow.c user/ui/utils_arrow.c\
 
 OSFILES= $(SFILES:.c=.o)
 OCFILES= $(CFILES:.c=.o)
@@ -49,12 +50,13 @@ $(SNAME): $(SOBJ)
 	$(CC) $(CFLAGS) $(SOBJ) libft/libft.a -o $(SNAME)
 
 $(CNAME): $(COBJ)
-	$(CC) $(CFLAGS) $(COBJ) libft/libft.a -o $(CNAME)
+	$(CC) $(CFLAGS) -ltermcap $(COBJ) libft/libft.a -o $(CNAME)
 
 $(OPATH)%.o: $(CPATH)%.c $(HFILES)
 	@mkdir -p $(OPATH)user/
 	@mkdir -p $(OPATH)user/dtp
 	@mkdir -p $(OPATH)user/pi
+	@mkdir -p $(OPATH)user/ui
 	@mkdir -p $(OPATH)server/
 	@mkdir -p $(OPATH)server/dtp
 	@mkdir -p $(OPATH)server/pi

@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 12:48:21 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/22 18:14:58 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/27 12:13:57 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ int     ft_acct(t_token **lst, t_usr **usr)
 
 int     ft_pwd(t_token **lst, t_usr **usr)
 {
+    (void)lst;
+    (void)usr;
     return (0);
 }
 

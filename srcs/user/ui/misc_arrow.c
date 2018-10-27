@@ -6,11 +6,11 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 18:28:08 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/26 17:01:08 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/27 12:17:23 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cmd_line.h"
+#include "user.h"
 
 int    realloc_line(t_line *line)
 {
@@ -35,20 +35,21 @@ int     multi_pos(t_line *line, size_t len)
     size_t  i;
 
     i = line->cur;
-    while (len)
-    {
-        line->cur++;
-        line->x++;
-        if (line->y == 0 && line->x == (line->max - line->offset))
+    if (line->print)
+        while (len)
         {
-            line->y++;
-            line->x = 0;
-        } else if (line->y > 0 && line->x == line->max) {
-            line->y++;
-            line->x = 0;
+            line->cur++;
+            line->x++;
+            if (line->y == 0 && line->x == (line->winsize - line->offset))
+            {
+                line->y++;
+                line->x = 0;
+            } else if (line->y > 0 && line->x == line->winsize) {
+                line->y++;
+                line->x = 0;
+            }
+            len--;
         }
-        len--;
-    }
     while (line->cur > i)
         cm_left(line);
     return (1);
@@ -56,12 +57,12 @@ int     multi_pos(t_line *line, size_t len)
 
 int     old_pos(t_line *line, size_t len)
 {
-    if (line->y == 0 && line->x == (line->max - line->offset))
+    if (line->print && line->y == 0 && line->x == (line->winsize - line->offset))
     {
         line->x = 0;
         line->y++;
         tputs(tgoto(tgetstr("cr", NULL), line->x, line->y), 1, usefull);
-    } else if (line->y > 0 && line->x == line->max) {
+    } else if (line->print && line->y > 0 && line->x == line->winsize) {
         line->y++;
         line->x = 0;
         tputs(tgoto(tgetstr("cr", NULL), line->x, line->y), 1, usefull);
@@ -74,17 +75,14 @@ int     replace_cursor(t_line *line, int mode)
 {
     size_t     i;
 
+    i = 0;
     if (mode == AR_LEFT)
     {
         i = line->x;
-        while (i > line->cur)
-        {
+        while (i-- > line->cur)
             tputs(tgoto(tgetstr("le", NULL), line->x, line->y), 1, usefull);
-            i--;
-        }
     } else if (mode == END) {
-        i = 0;
-        while (++i < line->max)
+        while (++i < line->winsize)
             tputs(tgoto(tgetstr("nd", NULL), line->x, line->y), 1, usefull);
     }
     return (1);

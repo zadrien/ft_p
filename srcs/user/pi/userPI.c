@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 13:06:05 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/22 18:14:26 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/27 12:22:25 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ int     ft_acct(t_token **lst, int s)
 
 int     quit_client(char **str, t_token **lst, int s)
 {
+    (void)lst;
     // verifier que des transfert ne sont pas en cours
       ft_strdel(str);
     // free_lst_token(lst);
@@ -137,14 +138,19 @@ int     userPI(char *str, int s)
     i = 0;
     m = 11;
     ft_putendl("ALLOR");
+    ft_putendl(str);
     if ((lst = parser(str)))
+    {
+        ft_putendl(lst->str);
         while (++i < m)
         {
+            ft_putendl("HI");
             if (!ft_strcmp(lst->str, cmd[i].cmd))
                 return (cmd[i].f(&lst, s));
             i++;
             if (i == m && !ft_strcmp(lst->str, "quit"))
                 quit_client(&str, &lst, s);
         }
+    }
     return (0);
 }

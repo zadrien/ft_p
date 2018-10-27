@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/24 17:38:59 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/26 12:49:09 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/27 12:03:39 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,17 +60,27 @@ typedef struct		s_choise
 	struct s_choise	*next;
 }					t_ch;
 
+typedef struct		s_window
+{
+	size_t			x;
+	size_t			y;
+	size_t			winsize;
+}					t_window;
+
+t_window			g_win;
+
 typedef struct		s_line
 {
 	char			*str;
 	char			buf[6];
+	int				print;
 	size_t			x;
 	size_t			y;
-	size_t			max;
-	size_t			offset;
 	size_t			cur;
-	size_t			str_len;
 	size_t			len;
+	size_t			winsize;
+	size_t			offset;
+	size_t			str_len;
 
 }					t_line;
 
@@ -87,27 +97,32 @@ typedef struct      s_input
     int     (*f)(t_line *line);
 }                   t_input;
 
-
+t_edit     *init_cmd_line(void);
 int     init_term(t_edit **edit, int i);
-t_edit	*init_cmd_line(void);
-t_line  *init_line(int offset);
 void    change_value(t_edit **edit, int i);
-int     window_size(void);
+t_line  *init_line(size_t offset, int printable);
 int     usefull(int i);
+int     window_size(void);
 
 
-/**
- * Arrow input
-*/
+void    start_line(int socket, int printable, char *prompt);
+int     restore_value(t_line *line);
+int    keyboard(t_line *line);
+
+int     ft_tab(t_line *line);
+int     cursor_motion(t_line *line);
+int     return_line(t_line *line);
 int     cm_left(t_line *line);
 int     cm_right(t_line *line);
-int     print_char(t_line *line);
-int     replace_cursor(t_line *line, int mode);
-int     insert_char(t_line *line);
-int     print_char(t_line *line);
-int    realloc_line(t_line *line);
-int     old_pos(t_line *line, size_t len);
-
 int     del_char(t_line *line);
+
+int    realloc_line(t_line *line);
 int     multi_pos(t_line *line, size_t len);
+int     old_pos(t_line *line, size_t len);
+int     replace_cursor(t_line *line, int mode);
+
+void    next_line(t_line *line);
+int     print_char(t_line *line);
+int     insert_char(t_line *line);
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/30 13:27:35 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/21 12:33:26 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/27 13:00:41 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,12 @@ int     ft_lls(t_token **lst, int socket)
     exec = create_tab(&(*lst)->next);
     if ((pid = fork()) == 0)
     {
+        setpgid(pid, pid);
+        tcsetpgrp(g_shell_terminal, getpid());
         execv(exec[0], exec);
     } else {
+        setpgid(pid, pid);
+        tcsetpgrp(g_shell_terminal, pid);
         wait4(pid, &status, WUNTRACED | WCONTINUED, &rusage);
     }
     if (WIFEXITED(status) && !WEXITSTATUS(status))

@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 11:35:53 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/05 14:00:18 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/27 12:31:07 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,23 +29,43 @@ char    *cmd_line()
     return (NULL);
 }
 
+// int     main(int ac, char **av)
+// {
+//     int     socket;
+//     char    *line;
+
+//     if (ac != 3)
+//         usage(av[0]);
+//     socket = com_link(av[1], av[2]);
+//     while (1)
+//     {
+//         ft_putendl("LOOP");
+//         line = cmd_line();
+//         if (userPI(line, socket))
+//             ft_putendl_fd("SUCCESS", 2);
+//         else
+//             ft_putendl_fd("ERROR", 2);
+//         ft_strdel(&line);
+//     }
+//     return (0);
+// }
+
 int     main(int ac, char **av)
 {
     int     socket;
-    char    *line;
+    t_edit  *term;
 
     if (ac != 3)
         usage(av[0]);
-    socket = com_link(av[1], av[2]);
-    while (1)
+    if (!(term = init_cmd_line()))
     {
-        ft_putendl("LOOP");
-        line = cmd_line();
-        if (userPI(line, socket))
-            ft_putendl_fd("SUCCESS", 2);
-        else
-            ft_putendl_fd("ERROR", 2);
-        ft_strdel(&line);
+        ft_putendl_fd("Failed init command line", 2);
+        return (0);
     }
-    return (0);
+    if (init_term(&term, 1))
+    {
+        socket = com_link(av[1], av[2]);
+        start_line(&term, socket, ON, "$> ");
+    }
+    
 }

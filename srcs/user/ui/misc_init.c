@@ -1,29 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   find_node.c                                        :+:      :+:    :+:   */
+/*   misc_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/05/01 08:36:50 by zadrien           #+#    #+#             */
-/*   Updated: 2017/08/03 17:38:13 by zadrien          ###   ########.fr       */
+/*   Created: 2018/10/25 17:50:20 by zadrien           #+#    #+#             */
+/*   Updated: 2018/10/27 12:17:18 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "user.h"
 
-t_env	*find_node(t_env **env, char *var, char *value)
+int     usefull(int i)
 {
-	t_env	*tmp;
+    return (write(2, &i, 1));
+}
 
-	if (!env)
-		return (NULL);
-	tmp = *env;
-	if (var != NULL)
-		while (tmp && ft_strcmp(tmp->var, var) != 0)
-			tmp = tmp->next;
-	else
-		while (tmp && ft_strcmp(tmp->value, value) != 0)
-			tmp = tmp->next;
-	return (tmp);
+int     window_size(void)
+{
+    struct winsize ws;
+
+    if (ioctl(0, TIOCGWINSZ, &ws) == -1)
+        return (0);
+    return (ws.ws_col);
 }

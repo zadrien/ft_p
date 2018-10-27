@@ -6,38 +6,40 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/26 11:55:08 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/26 12:05:37 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/27 12:17:13 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cmd_line.h"
+#include "user.h"
+
+void    next_line(t_line *line)
+{
+    line->y++;
+    line->x = 0;
+    tputs(tgoto(tgetstr("do", NULL), line->x, line->y), 1, usefull);
+    tputs(tgoto(tgetstr("cr", NULL), line->x, line->y), 1, usefull);
+}
 
 int     print_char(t_line *line)
 {
     if (ft_strlen(line->str) == (line->str_len - 1))
         if (!realloc_line(line))
-            ft_putendl("FAIL");
+            exit(EXIT_FAILURE);
     if (line->cur == line->len)
     {
+        line->cur++;
         line->str[line->len] = line->buf[0];
         line->x++;
-        line->cur++;
-        write(1, &line->buf[0], 1);
-        if (line->y == 0 && line->x == (line->max - line->offset))
+        if (line->print)
         {
-            tputs(tgoto(tgetstr("do", NULL), line->x, line->y), 1, usefull);
-            tputs(tgoto(tgetstr("cr", NULL), line->x, line->y), 1, usefull);
-            line->x = 0;
-            line->y++;
-        } else if (line->y > 0 && line->x == line->max) {
-            line->y++;
-            line->x = 0;
-            tputs(tgoto(tgetstr("do", NULL), line->x, line->y), 1, usefull);
-            tputs(tgoto(tgetstr("cr", NULL), line->x, line->y), 1, usefull);
+            write(1, &line->buf[0], 1);
+            if (line->y == 0 && line->x == (line->winsize - line->offset))
+                next_line(line);
+            else if (line->y > 0 && line->x == line->winsize)
+                next_line(line);
         }
-    } else if (line->cur < line->len) {
+    } else if (line->cur < line->len)
         insert_char(line);
-    }
     line->len++;
     return (0);
 }
@@ -51,16 +53,16 @@ int     insert_char(t_line *line)
     j = 0;
     i = line->cur + 1;
     tmp = ft_strdup(line->str + line->cur);
-    write(1, &line->buf[0], 1);
-    write(1, tmp, ft_strlen(tmp));
     line->str[line->cur] = line->buf[0];
     while (tmp[j])
-    {
-        line->str[i++] = tmp[j];
-        j++;
-    }
-    line->x++;
+        line->str[i++] = tmp[j++];
     line->cur++;
+    if (line->print)
+    {
+        line->x++;
+        write(1, &line->buf[0], 1);
+        write(1, tmp, ft_strlen(tmp));
+    }
     old_pos(line, ft_strlen(tmp));
     ft_strdel(&tmp);
     return (1);
