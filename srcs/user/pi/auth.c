@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/22 10:04:26 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/24 16:27:42 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/27 16:42:55 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,40 +56,42 @@ int     send_pass(int s, char *pass)
 int enter_password(int s, int verify)
 {
     int     r;
-    char    *line;
-    char    *line2;
+    t_line  *line;
+    t_line  *line2;
 
-    ft_putstr_fd("Enter password: ", 2);
-    if (get_next_line(1, &line) > 0)
+    if ((line = get_line("Enter password: ", OFF)))
     {
         if (!verify)
         {
-            send_pass(s, line);
-            ft_strdel(&line);
-            if (get_code(s) == 230)
+            send_pass(s, line->str);
+            free_line(line);
+            if ((r = get_code(s)) == 230)
             {
                 ft_putendl_fd("Connection attempt success", 2);
                 return (1);
+            } else if (r == 650) {
+                ft_putendl_fd("Can't find password for this account..\nPlease create it.", 2);
+                return (enter_password(s, 1));
             } else {
                 ft_putendl_fd("Connection attempt fail", 2);
                 ft_putendl_fd("Please write a correct password", 2);
-                enter_password(s, 0);
+                return (enter_password(s, 0));
             }
         } else {
-            while (1) {
-                ft_putstr_fd("Re-enter password: ", 2);
-                if (get_next_line(1, &line2) > 0)
+            while (1)
+            {
+                if ((line2 = get_line("Re-enter password: ", OFF)))
                 {
-                    if (!ft_strcmp(line, line2))
+                    if (!ft_strcmp(line->str, line2->str))
                     {
-                        r = create_password(s, line);
-                        ft_strdel(&line);
-                        ft_strdel(&line2);
+                        r = create_password(s, line->str);
+                        free_line(line);
+                        free_line(line2);
                         return (r);
                     }
                     else
-                        ft_putendl("");
-                    ft_strdel(&line2);
+                        ft_putendl("Not the same password");
+                    free_line(line2);
                 } else {
                     ft_putendl_fd("ABORT", 2);
                 }
@@ -123,12 +125,10 @@ int     create_user(int s, char *name)
         line = ft_strjoinf(line, name, 1);
         send(s, line, ft_strlen(line), 0);
         r = get_code(s);
-        if (r == 1)
+        if (r == 1 || r == 331)
         {
-            return (enter_password(s, 1));
-        } else if (r == 331) {
-            ft_putendl_fd("Account already exist!", 2); 
-            enter_password(s, 0);
+            r == 331 ? ft_putendl_fd("Account already exist!", 2) : 0;
+            return (enter_password(s, r == 331 ? 0 : 1));
         } else {
             ft_putendl_fd("Error occur", 2);
         }
@@ -138,28 +138,26 @@ int     create_user(int s, char *name)
 
 int     ask_create(int s, char *name)
 {
-    char    *line;
+    t_line  *line;
 
-    ft_putstr_fd("Would you like to create it? [Y/n]:", 2);
-    while (get_next_line(1, &line) > 0)
+    while ((line = get_line("Would you like to create it? [Y/n]:", ON)))
     {
-        if (!ft_strcmp(line, "Y"))
+        if (!ft_strcmp(line->str, "Y"))
         {
-            ft_strdel(&line);
+            free_line(line);
             if (create_user(s, name))
             {
                 ft_putendl("user & password created");
                 return (1);
             }
         }
-        else if (!ft_strcmp(line, "n"))
+        else if (!ft_strcmp(line->str, "n"))
         {
-            ft_strdel(&line);
+            free_line(line);
             break ;
         } else {
-            ft_strdel(&line);
+            free_line(line);
             ft_putendl("");
-            ft_putstr_fd("Would you like to create it? [Y/n]: ", 2);
         }
     }
     return (0);
@@ -173,6 +171,7 @@ int     auth(t_token **lst, int s)
     t_token *tmp;
 
     tmp = (*lst)->next;
+    ft_putendl("IN");
     if (tmp)
     {
         line  = ft_struct(buf, &tmp);

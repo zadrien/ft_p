@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/24 17:37:50 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/27 14:12:09 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/27 16:38:25 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int     restore_value(t_line *line)
     return (1);
 }
 
-void    start_line(t_edit **term, int socket, int printable, char *prompt)
+t_line  *get_line(char *prompt, int printable)
 {
     t_line  *line;
 
@@ -80,15 +80,35 @@ void    start_line(t_edit **term, int socket, int printable, char *prompt)
     ft_putstr_fd(prompt, 2);
     while (1)
     {
-        read(0, line->buf, 6);
+        if (read(0, line->buf, 6) == 0)
+            break ;
+        if (keyboard(line))
+            return (line);
+    }
+    free_line(line);
+    return (NULL);
+}
+
+void    start_line(t_edit *term, int socket, int printable, char *prompt)
+{
+    (void)term;
+    t_line  *line;
+
+    line = init_line(ft_strlen(prompt), printable);
+    ft_putstr_fd(prompt, 2);
+    while (1)
+    {
+        if (read(0, line->buf, 6) == 0)
+        {
+            free_line(line);
+            return ;
+        }
         if (keyboard(line))
         {
-            mode_off(*term);
             if (userPI(line->str, socket))
                 ft_putendl_fd("success", 2);
             else
                 ft_putendl_fd("error", 2);
-            mode_on(*term);
             restore_value(line);
             ft_putstr_fd(prompt, 2);
         }

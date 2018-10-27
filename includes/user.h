@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 13:17:40 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/27 12:51:08 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/27 16:09:38 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ typedef struct      s_input
 }                   t_input;
 
 t_edit  *init_cmd_line(void);
-int     init_term(t_edit **edit, int i);
+int     init_term(t_edit *edit);
 int     change_value(t_edit **edit, int i);
 t_line  *init_line(size_t offset, int printable);
 int     usefull(int i);
@@ -125,9 +125,11 @@ int     mode_on(t_edit *term);
 int     mode_off(t_edit *term);
 
 
-void    start_line(t_edit **term, int socket, int printable, char *prompt);
+void    start_line(t_edit *term, int socket, int printable, char *prompt);
 int     restore_value(t_line *line);
 int     keyboard(t_line *line);
+t_line  *get_line(char *prompt, int printable);
+void    free_line(t_line *line);
 
 int     ft_tab(t_line *line);
 int     cursor_motion(t_line *line);

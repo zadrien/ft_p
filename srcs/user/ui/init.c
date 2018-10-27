@@ -6,11 +6,22 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 14:38:42 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/27 12:52:45 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/27 16:10:23 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "user.h"
+
+
+void    free_line(t_line *line)
+{
+    if (line)
+    {
+        if (line->str)
+            ft_strdel(&line->str);
+        free(line);
+    }
+}
 
 t_line  *init_line(size_t offset, int printable)
 {
@@ -83,31 +94,24 @@ int     mode_on(t_edit *term)
     return (1);
 }
 
-int     init_term(t_edit **edit, int i)
+int     init_term(t_edit *edit)
 {
-    (void)i;
-    char    *shl_name;
-    t_edit  *tmp;
-
-    tmp = *edit;
     g_shell_terminal = STDIN_FILENO;
     if ((g_shell_is_interactive = isatty(g_shell_terminal)))
     {
         while (tcgetpgrp(g_shell_terminal) != (g_shell_pgid = getpgrp()))
             kill(-g_shell_pgid, SIGTTIN);
-        if ((shl_name = getenv("TERM")) == NULL)
-            shl_name = "xterm";
-        if (tgetent(0, shl_name) == ERR)
+        if (tgetent(0, edit->name_term) == ERR)
         {
             ft_putendl_fd("set-shell: tgetent: ERROR", 2);
             return (0);
         }
-        if (tcgetattr(1, &tmp->term) == -1)
+        if (tcgetattr(1, &edit->term) == -1)
         {
             ft_putendl_fd("set-shell: tcgetattr: ERROR", 2);
             return (0);
         }
-        if (mode_on(tmp))
+        if (mode_on(edit))
             return (1);
     }
     // if (tmp)

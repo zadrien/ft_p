@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 11:35:53 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/27 12:31:07 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/27 14:44:53 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,10 @@ int     main(int ac, char **av)
         ft_putendl_fd("Failed init command line", 2);
         return (0);
     }
-    if (init_term(&term, 1))
+    if (init_term(term))
     {
         socket = com_link(av[1], av[2]);
-        start_line(&term, socket, ON, "$> ");
+        start_line(term, socket, ON, "$> ");
     }
     
 }

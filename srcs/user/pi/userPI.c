@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 13:06:05 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/27 12:22:25 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/27 16:21:56 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,22 +135,20 @@ int     userPI(char *str, int s)
                                     {"ls", &ft_ls}, {"account", &ft_acct}, {"lls", &ft_lls}, {"lpwd", &ft_lpwd},
                                     {"lcd", &ft_lcd}, {"get", &c_get}, {"put", &c_put}};
 
-    i = 0;
+    i = -1;
     m = 11;
     ft_putendl("ALLOR");
     ft_putendl(str);
     if ((lst = parser(str)))
     {
-        ft_putendl(lst->str);
         while (++i < m)
         {
-            ft_putendl("HI");
+            // ft_putnbr(i);ft_putendl("");
             if (!ft_strcmp(lst->str, cmd[i].cmd))
                 return (cmd[i].f(&lst, s));
-            i++;
-            if (i == m && !ft_strcmp(lst->str, "quit"))
-                quit_client(&str, &lst, s);
         }
+        if (i == m && !ft_strcmp(lst->str, "quit"))
+            quit_client(&str, &lst, s);
     }
     return (0);
 }
