@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/24 17:37:50 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/27 16:38:25 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/28 11:22:41 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,26 +91,28 @@ t_line  *get_line(char *prompt, int printable)
 
 void    start_line(t_edit *term, int socket, int printable, char *prompt)
 {
-    (void)term;
+    int     r;
     t_line  *line;
 
     line = init_line(ft_strlen(prompt), printable);
     ft_putstr_fd(prompt, 2);
     while (1)
     {
+        ft_memset(line->buf, '\0', 6);
         if (read(0, line->buf, 6) == 0)
-        {
-            free_line(line);
-            return ;
-        }
+            break ;
         if (keyboard(line))
         {
-            if (userPI(line->str, socket))
+            if ((r = userPI(line->str, socket)) == -1)
+                break ;
+            else if (r == 1)
                 ft_putendl_fd("success", 2);
             else
                 ft_putendl_fd("error", 2);
+            mode_on(term);
             restore_value(line);
             ft_putstr_fd(prompt, 2);
         }
     }
+    free_line(line);
 }

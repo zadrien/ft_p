@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 14:39:49 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/27 12:17:35 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/28 09:17:54 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,10 @@ int     del_char(t_line *line)
         if (line->print)
         {
             cm_left(line);
+            tputs(tgoto(tgetstr("sc", NULL), line->x, line->y), 1, usefull);
             write(1, tmp, ft_strlen(tmp));
             write(1, " ", 1);
-            multi_pos(line, ft_strlen(tmp) + 1);
+            tputs(tgoto(tgetstr("rc", NULL), line->x, line->y), 1, usefull);
             ft_strdel(&tmp);
         }
         line->len--;

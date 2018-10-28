@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 13:06:05 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/27 16:21:56 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/28 11:17:08 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,15 +115,15 @@ int     ft_acct(t_token **lst, int s)
     return (wait_response(s, 0));
 }
 
-int     quit_client(char **str, t_token **lst, int s)
+int     quit_client(t_token **lst, int s)
 {
     (void)lst;
+    free_token(lst);
     // verifier que des transfert ne sont pas en cours
-      ft_strdel(str);
-    // free_lst_token(lst);
     close(s);
+    ft_putendl_fd("Connexion with server closed", 2);
     ft_putendl("quit client");
-    exit(EXIT_SUCCESS);
+    return (-1);
 }
 
 int     userPI(char *str, int s)
@@ -137,18 +137,20 @@ int     userPI(char *str, int s)
 
     i = -1;
     m = 11;
-    ft_putendl("ALLOR");
-    ft_putendl(str);
+    // ft_putendl("ALLOR");
     if ((lst = parser(str)))
     {
-        while (++i < m)
+        if (lst->str)
         {
-            // ft_putnbr(i);ft_putendl("");
-            if (!ft_strcmp(lst->str, cmd[i].cmd))
-                return (cmd[i].f(&lst, s));
+            while (++i < m)
+            {
+                if (!ft_strcmp(lst->str, cmd[i].cmd))
+                    return (cmd[i].f(&lst, s));
+            }
+            if (i == m && !ft_strcmp(lst->str, "quit"))
+                return (quit_client(&lst, s)); // clear all var
         }
-        if (i == m && !ft_strcmp(lst->str, "quit"))
-            quit_client(&str, &lst, s);
     }
+    free_token(&lst);
     return (0);
 }

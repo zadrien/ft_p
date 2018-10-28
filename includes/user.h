@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 13:17:40 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/27 16:09:38 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/28 09:36:47 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,11 @@
 # define HOME 72
 # define END 70
 
-pid_t               g_shell_pgid;
-struct              g_shell_termios;
 int                 g_shell_terminal;
 int                 g_shell_is_interactive;
-
+pid_t               g_shell_pgid;
+struct termios		g_shell_termios;
+typedef void		sigfunc(int);
 enum on_off
 {
     OFF = 0,

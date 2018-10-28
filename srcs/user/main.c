@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 11:35:53 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/27 14:44:53 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/28 11:23:14 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,27 +29,6 @@ char    *cmd_line()
     return (NULL);
 }
 
-// int     main(int ac, char **av)
-// {
-//     int     socket;
-//     char    *line;
-
-//     if (ac != 3)
-//         usage(av[0]);
-//     socket = com_link(av[1], av[2]);
-//     while (1)
-//     {
-//         ft_putendl("LOOP");
-//         line = cmd_line();
-//         if (userPI(line, socket))
-//             ft_putendl_fd("SUCCESS", 2);
-//         else
-//             ft_putendl_fd("ERROR", 2);
-//         ft_strdel(&line);
-//     }
-//     return (0);
-// }
-
 int     main(int ac, char **av)
 {
     int     socket;
@@ -67,5 +46,6 @@ int     main(int ac, char **av)
         socket = com_link(av[1], av[2]);
         start_line(term, socket, ON, "$> ");
     }
+    free(term);
     
 }

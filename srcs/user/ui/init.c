@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 14:38:42 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/27 16:10:23 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/28 11:14:32 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void    free_line(t_line *line)
 {
     if (line)
     {
+        ft_putendl("???");
         if (line->str)
             ft_strdel(&line->str);
         free(line);
@@ -69,6 +70,8 @@ int    change_value(t_edit **edit, int i)
 
 int     mode_off(t_edit *term)
 {
+    term->term.c_cc[VMIN] = 1;
+    term->term.c_cc[VTIME] = 0;
     term->term.c_lflag |= ~(ICANON | ECHO);
     if (tcsetattr(1, TCSADRAIN, &term->term) == -1)
     {
@@ -76,7 +79,7 @@ int     mode_off(t_edit *term)
         return (0);
     }
     return (1);
-}
+} // useless
 
 int     mode_on(t_edit *term)
 {
@@ -86,11 +89,32 @@ int     mode_on(t_edit *term)
     while (tcgetpgrp(g_shell_terminal) != (g_shell_pgid = getpgrp()))
         kill(-g_shell_pgid, SIGTTIN);
     tcsetpgrp(g_shell_terminal, g_shell_pgid);
-    if (tcsetattr(1, TCSADRAIN, &term->term) == -1)
+    if (tcsetattr(1, TCSADRAIN, &(term)->term) == -1)
     {
         ft_putendl_fd("set-shell: tcsetattr: ERROR", 2);
         return (0);
     }
+    return (1);
+}
+
+int     shell_sig(void)
+{
+    signal(SIGTSTP, SIG_IGN);
+    signal(SIGWINCH, SIG_IGN);
+    signal(SIGCHLD, SIG_DFL);
+    signal(SIGINT, SIG_DFL);
+    signal(SIGQUIT, SIG_IGN);
+    signal(SIGTTIN, SIG_IGN);
+    signal(SIGTTOU, SIG_IGN);
+    printf("%d\n", g_shell_pgid);
+    g_shell_pgid = getpid();
+    printf("%d\n", g_shell_pgid);
+    if (setpgid(g_shell_pgid, g_shell_pgid) == -1)
+        exit(EXIT_FAILURE);
+    tcsetpgrp(g_shell_terminal, g_shell_pgid);
+    if (tcgetattr(g_shell_terminal, &g_shell_termios) == -1)
+        exit(1);
+    tputs(tgetstr("nam", NULL), 1, usefull);
     return (1);
 }
 
@@ -101,6 +125,9 @@ int     init_term(t_edit *edit)
     {
         while (tcgetpgrp(g_shell_terminal) != (g_shell_pgid = getpgrp()))
             kill(-g_shell_pgid, SIGTTIN);
+        shell_sig();
+        if ((edit->name_term = getenv("TERM")) == NULL)
+            return (0);
         if (tgetent(0, edit->name_term) == ERR)
         {
             ft_putendl_fd("set-shell: tgetent: ERROR", 2);
@@ -114,18 +141,6 @@ int     init_term(t_edit *edit)
         if (mode_on(edit))
             return (1);
     }
-    // if (tmp)
-    // {
-    //     if (tgetent(NULL, tmp->name_term) == -1)
-    //         return (-1);
-    //     if (tcgetattr(0, &(tmp)->term) == -1)
-    //         return (-1);
-    //     if (change_value(&tmp, i))
-    //         return (1);
-    //     // if (tcsetattr(0, TCSANOW, &(tmp)->term) == -1)
-    //     //     return (-1);
-    //     // return (1);
-    // }
     return (0);
 }
 
@@ -135,7 +150,6 @@ t_edit     *init_cmd_line(void)
 
     if (!(tmp = (t_edit*)malloc(sizeof(t_edit))))
         return (NULL);
-    if ((tmp->name_term = getenv("TERM")) == NULL)
-        return (NULL);
+    
     return (tmp);
 }
