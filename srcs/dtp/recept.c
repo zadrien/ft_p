@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/19 11:24:40 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/21 13:47:52 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/29 11:14:09 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,13 @@ void    get_streame(int dtp, int fd, int print)
 
 int     recept(int s, int fd, int print)
 {
+    int             r;
     int             dtp;
     int             sock;
     socklen_t      len;
     struct sockaddr addr;
 
-    if (get_code(s) == 150)
+    if ((r = get_code(s)) == 150)
     {
         send_code(s, 50042); // CHOOSE BETTER PORT
         if ((sock = socket_receiver(50042)) > 0)
@@ -73,6 +74,7 @@ int     recept(int s, int fd, int print)
             if ((dtp = accept(sock, &addr, &len)))
             {
                 get_streame(dtp, fd, print);
+                write(1, "\n", 1);
                 close(dtp);
                 close(sock);
                 if (get_code(s) == 226)
@@ -80,6 +82,7 @@ int     recept(int s, int fd, int print)
             }
             close(sock);
         }
-    }
+    } else if (r == 530)
+        ft_putendl_fd("Not logged in.", 2);
     return (0);
 }

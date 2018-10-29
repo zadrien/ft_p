@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/19 11:32:36 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/21 12:25:48 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/29 10:47:18 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct      s_usr
     struct in_addr  addr;
     int             password;
     char            *user;
+    char            *home;
     char            *pwd;
     struct t_trans  *files;
     struct s_usr    *next;
@@ -54,6 +55,7 @@ int     get_port(int s);
 int     connect_socket(struct in_addr addr, int port);
 int     listen_socket(int port);
 int     accept_socket(int sock);
+int     send_str(int s, char *str);
 
 /**
  * USER-DTP

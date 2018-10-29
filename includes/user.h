@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 13:17:40 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/28 09:36:47 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/29 09:04:02 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,15 +147,13 @@ void    next_line(t_line *line);
 int     print_char(t_line *line);
 int     insert_char(t_line *line);
 
+char    *ft_struct(char *cmd, t_token **arg);
 int     userPI(char *str, int s);
 int     com_link(char *addr, char *port);
 int     ft_lls(t_token **lst, int socket);
-int     ft_lpwd(t_token **lst, int socket);
-int     ft_lcd(t_token **lst, int socket);
 int     c_get(t_token **lst, int s);
 int     c_put(t_token **lst, int s);
-char    *ft_struct(char *cmd, t_token **arg);
-
+int     wait_response(int s, int res);
 /**
  * Authentification
 */
@@ -164,4 +162,12 @@ int     create_user(int s, char *name);
 int     create_password(int s, char *pass);
 int     create_pass(t_token **lst, int s);
 
+
+/**
+ * Directory
+*/
+int     ft_lpwd(t_token **lst, int socket);
+int    ft_pwd(t_token **lst, int s);
+int     ft_lcd(t_token **lst, int socket);
+int     ft_cwd(t_token **lst, int s);
 #endif

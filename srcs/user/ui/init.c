@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 14:38:42 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/28 11:14:32 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/29 07:47:03 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,9 +106,7 @@ int     shell_sig(void)
     signal(SIGQUIT, SIG_IGN);
     signal(SIGTTIN, SIG_IGN);
     signal(SIGTTOU, SIG_IGN);
-    printf("%d\n", g_shell_pgid);
     g_shell_pgid = getpid();
-    printf("%d\n", g_shell_pgid);
     if (setpgid(g_shell_pgid, g_shell_pgid) == -1)
         exit(EXIT_FAILURE);
     tcsetpgrp(g_shell_terminal, g_shell_pgid);

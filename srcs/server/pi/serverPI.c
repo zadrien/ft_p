@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 12:48:21 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/27 12:13:57 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/29 11:16:40 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,35 +54,34 @@ int     ft_acct(t_token **lst, t_usr **usr)
         ft_putstr("Client IP: ");ft_putendl(str);
         ft_putstr("Client account: ");ft_putendl(tmp->user);
         ft_putstr("Password valid: ");ft_putnbr(tmp->password);ft_putendl("");
-        ft_putstr("pwd: ");ft_putendl(tmp->pwd);
+        ft_putstr("root: ");ft_putendl(tmp->home);
+        ft_putstr("cwd: ");ft_putendl(tmp->pwd);
     }
     return (1);
 }
 
-int     ft_pwd(t_token **lst, t_usr **usr)
-{
-    (void)lst;
-    (void)usr;
-    return (0);
-}
-
 void    serverPI(char *str, t_usr **usr, int cs)
 {
-    int             i;
-    int             m;
-    t_token               *lst;
-    static const t_cmd    cmd[9] = {{"USER", &auth}, {"PASS", &pass}, {"CREAT", &create}, {"INIT", &init_pass}, {"QUIT", &ft_logout},
-                                    {"LIST", &ft_list}, {"ACCT", ft_acct}, {"RETR", &s_get}, {"STOU", &s_put}};
+    int                 i;
+    int                 m;
+    t_token             *lst;
+    static const t_cmd  cmd[11] = {{"USER", &auth}, {"PASS", &pass}, {"CREAT", &create}, {"INIT", &init_pass}, {"QUIT", &ft_logout},
+                                    {"LIST", &ft_list}, {"ACCT", ft_acct}, {"RETR", &s_get}, {"STOU", &s_put}, {"CWD", &cwd},
+                                    {"PWD", &ft_pwd}};
 
     i = -1;
-    m = 9;
+    m = 11;
     ft_putendl(str);
     if ((lst = parser(str)))
         while (++i < m)
         {
             if (!ft_strcmp(lst->str, cmd[i].cmd))
+            {
                 reply(cmd[i].f(&lst, usr), cs);
+                return (free_token(&lst));
+            }
         }
-
+    free_token(&lst);
+    reply(500, cs);
 // suppression list chaine
 }

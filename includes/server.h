@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 13:34:02 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/22 16:16:47 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/29 19:03:34 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,13 @@ int     pass(t_token **lst, t_usr **usr);
 int     create(t_token **lst, t_usr **usr);
 int     init_pass(t_token **lst, t_usr **usr);
 
+/**
+ * Directory
+*/
+int     cwd(t_token **lst, t_usr **usr);
+int     ft_pwd(t_token **lst, t_usr **usr);
+int     complete_tab(char **exec, t_token **lst);
+int     handle_file(char *file, t_usr **usr);
+int     handle_dir(char *dir, t_usr **usr);
+size_t     path_file(char *file);
 #endif

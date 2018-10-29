@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/22 10:04:26 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/27 16:42:55 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/29 08:42:12 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int     send_pass(int s, char *pass)
 
     if (pass) // cas chaine de caracter existe mais vide a gerer
     {
-        line = ft_strjoin(buf, " ");
+        line = ft_strjoinf(buf, " ", 0);
         line = ft_strjoinf(line, pass, 1);
         send(s, line, ft_strlen(line), 0);
         ft_strdel(&line);

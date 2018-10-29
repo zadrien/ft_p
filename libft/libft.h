@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/19 15:32:31 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/21 12:36:15 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/29 16:24:42 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,4 +120,6 @@ t_token				*parser(char *aastr);
 void				init_token(t_token **tok);
 void				free_token(t_token **token);
 int					ft_countarg(t_token **lst);
+char			    *ft_strndup(char *str, size_t len);
+void    ft_freetab(char **trash);
 #endif

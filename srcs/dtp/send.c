@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/19 11:06:53 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/20 17:51:43 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/29 10:49:36 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,33 @@ void    send_data(int s, int fd)
         send(s, buf, ft_strlen(buf), 0);
     }
     close(fd);
+}
+
+int     send_str(int s, char *str)
+{
+    int     i;
+    int     j;
+    char    buf[8];
+
+    i = 0;
+    j = 0;
+    str[i] ? (buf[j++] = str[i++]) : 0;
+    while (str[i])
+    {
+        if (i % 7 == 0)
+        {
+            buf[8] = '\0';
+            send(s, buf, ft_strlen(buf), 0);
+            ft_bzero(buf, 8);
+            j = 0;
+        }
+        buf[j++] = str[i++];
+    }
+    buf[j] = '\0';
+    if (buf[0] != '\0')
+        send(s, buf, ft_strlen(buf), 0);
+    close(s);
+    return (226);
 }
 
 int    transmission(t_usr *usr, int get, int fd)

@@ -6,7 +6,7 @@
 #    By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/02 18:16:06 by zadrien           #+#    #+#              #
-#    Updated: 2018/10/27 12:18:28 by zadrien          ###   ########.fr        #
+#    Updated: 2018/10/29 19:02:36 by zadrien          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,13 +22,13 @@ HPATH= includes/ libft/
 INC= $(addprefix -I , $(HPATH))
 SFILES= server/main.c \
 		server/pi/serverPI.c server/pi/auth.c server/pi/auth_utils.c server/pi/auth_creat.c \
-		server/pi/ft_list.c \
+		server/pi/ft_list.c server/pi/cwd.c server/pi/utils_list.c \
 		server/dtp/get-server.c server/dtp/put-server.c \
 		dtp/recept.c dtp/send.c dtp/dtp-utils.c dtp/dtp-server.c dtp/stream-handler.c \
 
 CFILES= user/main.c \
 		user/pi/com_link.c user/pi/userPI.c user/pi/lls.c user/pi/lpwd.c \
-		user/pi/lcd.c /user/pi/auth.c \
+		user/pi/lcd.c /user/pi/auth.c user/pi/ft_cwd.c \
 		dtp/recept.c dtp/send.c dtp/dtp-utils.c dtp/dtp-client.c dtp/stream-handler.c \
 		user/pi/pi-utils.c user/dtp/get-client.c user/dtp/put-client.c \
 		user/ui/ui.c user/ui/arrow.c user/ui/init.c user/ui/misc_init.c user/ui/misc_arrow.c user/ui/utils_arrow.c\

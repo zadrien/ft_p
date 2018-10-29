@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 13:06:05 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/28 11:17:08 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/29 09:02:14 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,16 +81,16 @@ int     ft_logout(t_token **lst, int s)
     return (wait_response(s, 0));
 }
 
-int     ft_pwd(t_token **lst, int s)
-{
-    (void)s;
-    char                *line;
-    char   buf[4] = "PWD\0";
-    line = ft_struct(buf, &(*lst)->next);
-    send(s, line, ft_strlen(line), 0);
-    ft_strdel(&line);
-    return (wait_response(s, 1));
-}
+// int     ft_pwd(t_token **lst, int s)
+// {
+//     (void)s;
+//     char                *line;
+//     char   buf[4] = "PWD\0";
+//     line = ft_struct(buf, &(*lst)->next);
+//     send(s, line, ft_strlen(line), 0);
+//     ft_strdel(&line);
+//     return (wait_response(s, 1));
+// }
 
 int     ft_ls(t_token **lst, int s)
 {
@@ -131,12 +131,12 @@ int     userPI(char *str, int s)
     int                 i;
     int                 m;
     t_token             *lst;
-    static const t_pi   cmd[11] = {{"username", &auth}, {"password", &ft_password}, {"init", &create_pass}, {"logout", &ft_logout},
-                                    {"ls", &ft_ls}, {"account", &ft_acct}, {"lls", &ft_lls}, {"lpwd", &ft_lpwd},
-                                    {"lcd", &ft_lcd}, {"get", &c_get}, {"put", &c_put}};
+    static const t_pi   cmd[13] = {{"username", &auth}, {"password", &ft_password}, {"init", &create_pass}, {"logout", &ft_logout},
+                                    {"ls", &ft_ls}, {"account", &ft_acct}, {"lls", &ft_lls}, {"lpwd", &ft_lpwd}, {"pwd", &ft_pwd},
+                                    {"lcd", &ft_lcd}, {"cd", &ft_cwd}, {"get", &c_get}, {"put", &c_put}};
 
     i = -1;
-    m = 11;
+    m = 13;
     // ft_putendl("ALLOR");
     if ((lst = parser(str)))
     {

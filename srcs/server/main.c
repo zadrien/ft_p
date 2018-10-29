@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 12:16:01 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/20 12:47:00 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/29 08:14:44 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ t_usr    *init_usr(int cs, struct sockaddr_in addr)
     tmp->user = NULL;
     tmp->password = 0;
     tmp->pwd = NULL;
+    tmp->home = NULL;
     tmp->files = NULL;
     tmp->next = NULL;
     return (tmp);

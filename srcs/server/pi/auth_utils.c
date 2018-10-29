@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/09 10:49:12 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/22 17:53:44 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/29 08:14:15 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ int     verify_auth(t_usr **usr, char *str)
                 {
                     ft_strdel(&path);
                     tmp->pwd = getcwd(NULL, 1023);
+                    tmp->home = ft_strdup(tmp->pwd);
                     return (1);
                 }
             } else
