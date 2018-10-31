@@ -6,12 +6,24 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/20 17:52:01 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/21 15:38:53 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/31 16:41:16 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "dtp.h"
+#include "ftp.h"
 
+int     send_info(int fd, int cs)
+{
+    struct stat buf;
+
+    ft_putendl("Here?");
+    if (!fstat(fd, &buf))
+    {
+        ft_putendl("??????");
+        send(cs, &buf.st_size, sizeof(buf.st_size), 0);
+    }
+    return (1);
+}
 
 int     handle_client(int s, int fd, int mode)
 {
@@ -20,11 +32,28 @@ int     handle_client(int s, int fd, int mode)
     r = -1;
     if (mode == GET)
     { // stocker dans un fichier
-        r = get_stream(s, fd, NONE);
+        r = get_stream(s, fd, NONE, NONE);
     } else {
+        send_info(fd, s);
         r = put_stream(s, fd);
     }
     return (r);
+}
+
+int     get_socket(t_usr *usr)
+{
+    int     in;
+    int     sock;
+    int     port;
+
+    in = 150;
+    send(usr->cs, &in, sizeof(int), 0);
+    if ((port = get_port(usr->cs)))
+    {
+        if ((sock = connect_socket(usr->addr, port)) > 0)
+            return (sock);
+    }
+    return (425);
 }
 
 int     wait_client(int s, struct in_addr addr, int fd, int mode)

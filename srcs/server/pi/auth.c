@@ -6,11 +6,11 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/09 12:17:34 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/22 18:06:02 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/31 11:44:51 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "server.h"
+#include "ftp.h"
 
 int    co_attempt(t_usr **usr, char *name)
 {
@@ -31,7 +31,7 @@ int    co_attempt(t_usr **usr, char *name)
     return (332);
 }
 
-int     auth(t_token **lst, t_usr **usr)
+int     s_auth(t_token **lst, t_usr **usr)
 {
     t_token *tmp;
 
@@ -76,7 +76,7 @@ int     pass(t_token **lst, t_usr **usr)
     return (530);
 }
 
-int     ft_logout(t_token **lst, t_usr **usr)
+int     s_logout(t_token **lst, t_usr **usr)
 {
     (void)lst;
     ft_putendl("LOGOUT");

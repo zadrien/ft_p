@@ -6,11 +6,11 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/29 08:36:53 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/29 09:06:23 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/30 18:05:25 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "user.h"
+#include "ftp.h"
 
 int     ft_cwd(t_token **lst, int s)
 {

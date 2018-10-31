@@ -6,11 +6,11 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/28 09:32:36 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/28 09:34:01 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/30 18:06:19 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "user.h"
+#include "ftp.h"
 
 
 void        check_signal(int signo)

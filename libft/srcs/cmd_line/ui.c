@@ -6,11 +6,11 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/24 17:37:50 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/30 18:06:26 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/31 11:37:48 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ftp.h"
+#include "libft.h"
 
 int     return_line(t_line *line)
 {
@@ -87,32 +87,4 @@ t_line  *get_line(char *prompt, int printable)
     }
     free_line(line);
     return (NULL);
-}
-
-void    start_line(t_edit *term, int socket, int printable, char *prompt)
-{
-    int     r;
-    t_line  *line;
-
-    line = init_line(ft_strlen(prompt), printable);
-    ft_putstr_fd(prompt, 2);
-    while (1)
-    {
-        ft_memset(line->buf, '\0', 6);
-        if (read(0, line->buf, 6) == 0)
-            break ;
-        if (keyboard(line))
-        {
-            if ((r = userPI(line->str, socket)) == -1)
-                break ;
-            else if (r == 1)
-                ft_putendl_fd("success", 2);
-            else
-                ft_putendl_fd("error", 2);
-            mode_on(term);
-            restore_value(line);
-            ft_putstr_fd(prompt, 2);
-        }
-    }
-    free_line(line);
 }

@@ -6,11 +6,11 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/09 10:49:12 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/29 08:14:15 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/30 18:04:09 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "server.h"
+#include "ftp.h"
 
 int     user_reply(int code, char *msg, int cs)
 {

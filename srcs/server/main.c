@@ -6,11 +6,11 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 12:16:01 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/29 08:14:44 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/30 18:04:54 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "server.h"
+#include "ftp.h"
 
 void usage(char *str)
 {

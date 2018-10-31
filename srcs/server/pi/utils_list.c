@@ -6,18 +6,17 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/29 18:19:10 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/29 20:34:44 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/30 18:04:48 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "server.h"
+#include "ftp.h"
 
 size_t     path_file(char *file)
 {
     size_t  len;
 
     len = ft_strlen(file) - 1;
-    ft_putstr("end char file name: ");ft_putchar(file[len]);ft_putendl("");
     while (file[len])
     {
         if (file[len] == '/')
@@ -33,10 +32,8 @@ int     handle_file(char *file, t_usr **usr)
     char    *path;
     size_t  len;
 
-    ft_putendl("~~~handle_file~~~~");
     len = path_file(file);
     path = ft_strndup(file, len);
-    ft_putendl(path);
     if (!chdir(path))
     {
         ft_strdel(&path);
@@ -57,7 +54,6 @@ int     handle_file(char *file, t_usr **usr)
 int     handle_dir(char *dir, t_usr **usr)
 {
     char    *path;
-    ft_putendl("~~~handle_dir~~~~");
     if (!chdir(dir))
     {
         path = getcwd(NULL, 1023);
@@ -83,7 +79,6 @@ int     complete_tab(char **exec, t_token **lst)
     tmp = *lst;
     while (tmp)
     {
-        ft_putendl("!!!!");
         exec[j] = ft_strdup(tmp->str);
         tmp = tmp->next;
         j++;

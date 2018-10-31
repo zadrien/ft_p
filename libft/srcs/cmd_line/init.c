@@ -6,11 +6,11 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 14:38:42 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/30 18:06:04 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/31 10:26:40 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ftp.h"
+#include "libft.h"
 
 
 void    free_line(t_line *line)

@@ -6,11 +6,11 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/22 10:04:26 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/29 08:42:12 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/30 18:05:15 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "user.h"
+#include "ftp.h"
 
 int     create_password(int s, char *pass)
 {

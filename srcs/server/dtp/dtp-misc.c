@@ -1,35 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   stream-handler.c                                   :+:      :+:    :+:   */
+/*   dtp-misc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/21 12:21:57 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/21 15:59:08 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/31 16:18:11 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "dtp.h"
+#include "ftp.h"
 
-int     get_stream(int s, int fd, int print)
+int     get_stream(int s, int fd, int print, off_t size)
 {
-    int     r;
+    (void)print;
+    size_t  r;
+    off_t   tot;
     char    buf[8];
 
+    tot = 0;
     while ((r = recv(s, buf, 7, 0)))
     {
         buf[r] = '\0';
-        if (print)
-            ft_putstr(buf);
-        else
-            write(fd, buf, ft_strlen(buf));
+        write(fd, buf, ft_strlen(buf));
+        tot += r;
     }
-    if (!print)
-        close(fd);
     close(s);
-    ft_putendl("END GET STREAM");
-    return (226);
+    if (tot == size)
+        return (250);
+    return (426);
 }
 
 int     put_stream(int s, int fd)

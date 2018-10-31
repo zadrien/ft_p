@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 16:57:00 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/19 11:35:35 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/31 11:39:22 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,46 +25,53 @@
 # include <sys/wait.h>
 # include <sys/stat.h>
 # include <fcntl.h>
+# include <curses.h>
+# include <termios.h>
+# include <term.h>
+# include <sys/ioctl.h>
+# include <stdlib.h>
+#include <dirent.h>
 
 # include "libft.h"
-# include "login.h"
 
+enum print {
+    NONE = 0,
+    PRINT = 1,
+    GET = 2,
+    PUT = 0
+};
 
-void    execution(char *str, t_usr **usr);
-void    send_msg(int cs, char *msg);
-void    ft_env(t_token **arg, t_usr **usr);
-int     send_file(int socket, char *file);
-int     recv_file(int socket, char  *file);
-
-/*
-** Server execution
-*/
-typedef struct      s_builtin
+typedef struct      s_usr
 {
-    char            *cmd;
-    void             (*f)(t_token**, t_usr **);
-}                   t_builtin;
+    int             cs;
+    struct in_addr  addr;
+    int             password;
+    char            *user;
+    char            *home;
+    char            *pwd;
+    struct t_trans  *files;
+    struct s_usr    *next;
+}                   t_usr;
 
-void    ft_get(t_token **lst, t_usr **usr);
-void    ft_put(t_token **lst, t_usr **usr);
-
-
-/*
-** Client execution
-*/
-
-typedef struct      s_client
+typedef struct		s_window
 {
-    char            *cmd;
-    void            (*f)(t_token**, int);
-}                   t_client;
+	size_t			x;
+	size_t			y;
+	size_t			winsize;
+}					t_window;
 
-int     client_exec(char *str, int socket);
-void    ft_lls(t_token **lst, int socket);
-int     ft_countarg(t_token **lst);
-void    ft_lpwd(t_token **lst, int socket);
-void    ft_lcd(t_token **lst, int socket);
-void    ft_lget(t_token **lst, int socket);
-void    ft_lput(t_token **lst, int socket);
+
+typedef struct      s_trans
+{
+    pid_t           pid;
+    char            *filename;
+    size_t          fsize;
+    size_t          atrans;
+    struct t_trans  *next;
+}                   t_trans;
+
+# include "user.h"
+# include "server.h"
+# include "dtp.h"
 
 #endif

@@ -1,46 +1,69 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   com_link.c                                         :+:      :+:    :+:   */
+/*   dtp-utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/05 11:44:41 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/30 18:05:20 by zadrien          ###   ########.fr       */
+/*   Created: 2018/10/19 11:14:00 by zadrien           #+#    #+#             */
+/*   Updated: 2018/10/31 16:12:17 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftp.h"
 
-int     com_link(char *addr, char *port)
+int    get_code(int s)
 {
-    int                 p;
+    int     r;
+
+    r = 0;
+    if (recv(s, &r, sizeof(int), 0) == -1)
+        perror("recv");
+    printf("get_code(s) =  %d\n", r);    
+    return (r);
+}
+
+void    send_code(int s, int code)
+{
+    if (send(s, &code, sizeof(int), 0) == -1)
+        perror("send()");
+}
+
+int     get_port(int s)
+{
+    int     port;
+
+    port = get_code(s);
+    return (port);
+}
+
+int     connect_socket(struct in_addr addr, int port)
+{
     int                 sock;
     int                 optval = 1;
     struct protoent     *proto;
     struct sockaddr_in  sin;
 
-    p = ft_atoi(port);
     if ((proto = getprotobyname("tcp")))
     {
-        if ((sock = socket(PF_INET, SOCK_STREAM, proto->p_proto)) != -1)
+        if ((sock = socket(AF_INET, SOCK_STREAM, proto->p_proto)) != -1)
         {
+            ft_putendl_fd("Data link: Socket created", 2);
             if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval)) == -1)
                 ft_putendl_fd("ERROR SERSOCKOPT", 2);
             sin.sin_family = AF_INET;
-            sin.sin_port = htons(p);
-            sin.sin_addr.s_addr = inet_addr(addr);
+            sin.sin_port = htons(port);
+            sin.sin_addr = addr;
             if (connect(sock, (const struct sockaddr*)&sin, sizeof(sin)) == -1)
             {
-                ft_putendl_fd("Connect error", 2);
+                perror("connect: ");
+                ft_putendl_fd("Data link server: Connect error", 2);
                 return (-1);
             }
+            ft_putendl_fd("Data link server: Connect success", 2);
             return (sock);
-        } else {
-            ft_putendl_fd("socket creation error", 2);
         }
-    } else {
-        ft_putendl_fd("proto is null", 2);
     }
-    return (-1);
+    return (0);
 }
+

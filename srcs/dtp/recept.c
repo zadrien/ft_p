@@ -6,11 +6,11 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/19 11:24:40 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/29 11:14:09 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/30 17:53:20 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "dtp.h"
+#include "ftp.h"
 
 int     socket_receiver(int port)
 {

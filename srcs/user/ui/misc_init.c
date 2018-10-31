@@ -6,11 +6,11 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 17:50:20 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/27 12:17:18 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/30 18:06:13 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "user.h"
+#include "ftp.h"
 
 int     usefull(int i)
 {

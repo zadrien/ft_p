@@ -1,21 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   put.c                                              :+:      :+:    :+:   */
+/*   signal_handler.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/10 09:17:46 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/10 09:29:36 by zadrien          ###   ########.fr       */
+/*   Created: 2018/10/28 09:32:36 by zadrien           #+#    #+#             */
+/*   Updated: 2018/10/31 10:26:59 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "server.h"
+#include "libft.h"
 
-int     ft_put(t_token **lst, t_usr **usr, int cs)
+
+void        check_signal(int signo)
 {
-    if (check_user(usr) == 230)
-    {
 
+}
+
+void        signal_handler(void)
+{
+    int     i;
+
+    i = -1;
+    while (++ < 32)
+    {
+        signal(i, check_signal);
     }
 }

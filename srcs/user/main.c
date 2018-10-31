@@ -6,11 +6,11 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 11:35:53 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/28 11:23:14 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/31 15:57:04 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "user.h"
+#include "ftp.h"
 
 void usage(char *str)
 {
@@ -27,6 +27,39 @@ char    *cmd_line()
     if (get_next_line(1, &line) > 0)
         return (line);
     return (NULL);
+}
+
+void    success_error(char *str, char *color)
+{
+    ft_putstr_fd(color, 2);
+    ft_putendl_fd(str, 2);
+    ft_putstr_fd(RESET, 2);
+}
+
+void    start_line(t_edit *term, int socket, int printable, char *prompt)
+{
+    int     r;
+    t_line  *line;
+
+    line = init_line(ft_strlen(prompt), printable);
+    ft_putstr_fd(prompt, 2);
+    while (1)
+    {
+        ft_memset(line->buf, '\0', 6);
+        if (read(0, line->buf, 6) == 0)
+            break ;
+        if (keyboard(line))
+        {
+            if ((r = userPI(line->str, socket)) == -1)
+                break ;
+            else 
+                success_error((r == 1 ? "success" : "error"), (r == 1 ? GREEN : RED));
+            mode_on(term);
+            restore_value(line);
+            ft_putstr_fd(prompt, 2);
+        }
+    }
+    free_line(line);
 }
 
 int     main(int ac, char **av)

@@ -6,11 +6,11 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 12:48:21 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/29 11:16:40 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/31 11:45:07 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "server.h"
+#include "ftp.h"
 
 typedef struct      s_cmd
 {
@@ -65,9 +65,9 @@ void    serverPI(char *str, t_usr **usr, int cs)
     int                 i;
     int                 m;
     t_token             *lst;
-    static const t_cmd  cmd[11] = {{"USER", &auth}, {"PASS", &pass}, {"CREAT", &create}, {"INIT", &init_pass}, {"QUIT", &ft_logout},
+    static const t_cmd  cmd[11] = {{"USER", &s_auth}, {"PASS", &pass}, {"CREAT", &create}, {"INIT", &init_pass}, {"QUIT", &s_logout},
                                     {"LIST", &ft_list}, {"ACCT", ft_acct}, {"RETR", &s_get}, {"STOU", &s_put}, {"CWD", &cwd},
-                                    {"PWD", &ft_pwd}};
+                                    {"PWD", &s_pwd}};
 
     i = -1;
     m = 11;

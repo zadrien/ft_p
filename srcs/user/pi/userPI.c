@@ -6,11 +6,11 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 13:06:05 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/29 09:02:14 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/31 16:36:41 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "user.h"
+#include "ftp.h"
 
 typedef struct  s_pi
 {
@@ -20,22 +20,11 @@ typedef struct  s_pi
 
 int     wait_response(int s, int res)
 {
+    (void)res;
     int     r;
-    // char    buf[8];
 
-    if (res)
-    {
-        return (recept(s, NONE, PRINT));
-        // while (read(s, buf, 7) > 0)
-        // {
-        //     buf[r] = '\0';
-        //     ft_putendl(line);
-        //     ft_strdel(&line);
-        // }
-    } else {
-        recv(s, &r, sizeof(int), 0);
-        printf("response:%d\n", r);
-    }
+    recv(s, &r, sizeof(int), 0);
+    printf("response:%d\n", r);
     return (r);
 }
 
@@ -100,7 +89,8 @@ int     ft_ls(t_token **lst, int s)
     line = ft_struct(buf, &(*lst)->next);
     send(s, line, ft_strlen(line), 0);
     ft_strdel(&line);
-    return (wait_response(s, 1));
+    return (wait_server(s, NONE, PRINT, GET));
+    // return (wait_response(s, 1));
 }
 
 int     ft_acct(t_token **lst, int s)

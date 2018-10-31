@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/11 14:51:41 by zadrien           #+#    #+#             */
-/*   Updated: 2017/03/15 20:01:53 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/31 11:27:50 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static int		ft_count_letter(char *str, int i, char c)
 	return (l);
 }
 
-static void		ft_put_word(char **tab, char *str, int l, char c)
+static void		ft_put_word(char **array, char *str, int l, char c)
 {
 	int		i;
 	char	*word;
@@ -62,7 +62,7 @@ static void		ft_put_word(char **tab, char *str, int l, char c)
 		i++;
 	}
 	word[i] = '\0';
-	*tab = word;
+	*array = word;
 }
 
 char			**ft_strsplit(char const *s, char c)
@@ -70,11 +70,11 @@ char			**ft_strsplit(char const *s, char c)
 	int		i;
 	int		l;
 	int		tc;
-	char	**tab;
+	char	**t;
 
 	tc = -1;
 	i = ft_count_word((char *)s, c);
-	if (!s || (!(tab = (char**)malloc(sizeof(char*) * (i + 1)))))
+	if (!s || (!(t = (char**)malloc(sizeof(char*) * (i + 1)))))
 		return (NULL);
 	i = 0;
 	while (s[i] != '\0')
@@ -82,13 +82,13 @@ char			**ft_strsplit(char const *s, char c)
 		if (s[i] != c && s[i] != '\0')
 		{
 			l = ft_count_letter((char *)s, i, c);
-			ft_put_word(&tab[++tc], (char *)s + i, l, c);
+			ft_put_word(&t[++tc], (char *)s + i, l, c);
 			while (s[i] != c && s[i] != '\0')
 				i++;
 		}
 		else
 			i++;
 	}
-	tab[++tc] = 0;
-	return (tab);
+	t[++tc] = 0;
+	return (t);
 }

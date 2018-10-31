@@ -6,11 +6,11 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/29 08:07:24 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/29 16:35:19 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/31 16:33:43 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "server.h"
+#include "ftp.h"
 
 int     go_home(t_usr **usr)
 {
@@ -99,7 +99,34 @@ char	*get_path(const char *big, const char *little)
     return (0);
 }
 
-int     ft_pwd(t_token **lst, t_usr **usr)
+int     send_str(int s, char *str)
+{
+    int     i;
+    int     j;
+    char    buf[8];
+
+    i = 0;
+    j = 0;
+    str[i] ? (buf[j++] = str[i++]) : 0;
+    while (str[i])
+    {
+        if (i % 7 == 0)
+        {
+            buf[8] = '\0';
+            send(s, buf, ft_strlen(buf), 0);
+            ft_bzero(buf, 8);
+            j = 0;
+        }
+        buf[j++] = str[i++];
+    }
+    buf[j] = '\0';
+    if (buf[0] != '\0')
+        send(s, buf, ft_strlen(buf), 0);
+    close(s);
+    return (226);
+}
+
+int     s_pwd(t_token **lst, t_usr **usr)
 {
     int     cs;
     char    *str;
@@ -110,7 +137,7 @@ int     ft_pwd(t_token **lst, t_usr **usr)
         return (530);
     if (!(*lst)->next)
     {
-        cs = transmission(*usr, GET, 0);
+        cs = get_socket(*usr);
         str = get_path(tmp->pwd, tmp->home);
         ft_putendl("===PWD===");
         ft_putendl(str);

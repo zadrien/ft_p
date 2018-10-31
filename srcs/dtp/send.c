@@ -6,11 +6,11 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/19 11:06:53 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/29 10:49:36 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/30 17:53:26 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "dtp.h"
+#include "ftp.h"
 
 int     prepare_socket(t_usr *usr, int port)
 {

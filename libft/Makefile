@@ -6,11 +6,18 @@
 #    By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/03 20:05:29 by zadrien           #+#    #+#              #
-#    Updated: 2018/10/29 16:24:36 by zadrien          ###   ########.fr        #
+#    Updated: 2018/10/31 11:37:08 by zadrien          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libft.a
+
+FLAG = -Wall -Wextra -Werror -ltermcap
+CPATH= srcs/
+OPATH= obj/
+HPATH= includes/
+INC= $(addprefix -I , $(HPATH))
+HFILES= includes/libft.h \
 
 SRC =	ft_atoi.c ft_bzero.c ft_isalnum.c ft_isalpha.c ft_isascii.c \
 		ft_isdigit.c ft_isprint.c ft_tolower.c ft_toupper.c	\
@@ -34,22 +41,30 @@ SRC =	ft_atoi.c ft_bzero.c ft_isalnum.c ft_isalpha.c ft_isascii.c \
 		ft_putendn.c count_tab.c find_node.c	\
 		parser.c free_token.c new_env.c add_env.c\
 		ft_countarg.c ft_strndup.c ft_freetab.c \
+		cmd_line/init.c cmd_line/misc_init.c cmd_line/arrow.c cmd_line/utils_arrow.c cmd_line/misc_arrow.c \
+		cmd_line/ui.c \
 
 OBJS = $(SRC:.c=.o)
 
-FLAG = -Wall -Wextra -Werror
+LOBJ= $(addprefix $(OPATH), $(OBJS))
+
 
 all: $(NAME)
 
-$(NAME):
-		@gcc $(FLAG) -c $(SRC)
-		@ar rc $(NAME) $(OBJS)
-		@ranlib $(NAME)
 
+$(OPATH)%.o: $(CPATH)%.c $(HFILES)
+	@mkdir -p $(OPATH)
+	@mkdir -p $(OPATH)cmd_line/
+
+	gcc -c -o $@ $< $(FLAG) $(INC)
+
+$(NAME): $(LOBJ)
+	ar rc $(NAME) $(LOBJ)
+	ranlib $(NAME)
 clean:
-		@rm -f $(OBJS)
+		@rm -rf $(LOBJ)
 
 fclean: clean
 	@rm -f $(NAME)
-
+	@rm -rf $(OPATH)
 re: fclean all

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   dtp-client.c                                       :+:      :+:    :+:   */
+/*   dtp-utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/20 17:51:53 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/31 16:01:35 by zadrien          ###   ########.fr       */
+/*   Created: 2018/10/31 15:58:44 by zadrien           #+#    #+#             */
+/*   Updated: 2018/10/31 16:46:28 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void    print_progress(off_t tot, off_t size)
 {
     size_t   r;
     size_t   i;
+
     r = ((size_t)tot * 100) / (size_t)size;
     r = ((g_win - 3) * r) / 100;
     if (r == 1)
@@ -60,12 +61,9 @@ void    print_progress(off_t tot, off_t size)
         write(1, ">", 1);
         tputs(tgoto(tgetstr("rc", NULL), 0, 0), 1, usefull);
     } else if (r > 1) {
-        i = 0;
-        while (i < r)
-        {
+        i = -1;
+        while (++i < r)
             write(1, "=", 1);
-            i++;
-        }
         if (i == r)
             write(1, ">", 1);
         tputs(tgoto(tgetstr("rc", NULL), 0, 0), 1, usefull);        
@@ -75,13 +73,9 @@ void    print_progress(off_t tot, off_t size)
 int     get_info(int s)
 {
     off_t   size;
-    // struct stat buf;
     
     ft_putstr_fd("Size file: ", 2);
     recv(s, &size, sizeof(off_t), 0);
     ft_putendn(size);
     return (size);
 }
-
-
-

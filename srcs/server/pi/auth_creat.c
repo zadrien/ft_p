@@ -6,11 +6,11 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/22 15:12:06 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/22 17:55:07 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/30 18:03:44 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "server.h"
+#include "ftp.h"
 
 int     create_repo(t_usr **usr, char *dir)
 {

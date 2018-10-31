@@ -1,28 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   put-server.c                                       :+:      :+:    :+:   */
+/*   misc_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/21 15:07:39 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/31 16:19:15 by zadrien          ###   ########.fr       */
+/*   Created: 2018/10/25 17:50:20 by zadrien           #+#    #+#             */
+/*   Updated: 2018/10/31 10:26:45 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ftp.h"
+#include "libft.h"
 
-int     s_put(t_token **lst, t_usr **usr)
+int     usefull(int i)
 {
-    int     fd;
-    t_token *tmp;
-    t_usr   *us;
+    return (write(2, &i, 1));
+}
 
-    tmp = (*lst)->next;
-    us = *usr;
-    if ((fd = open(tmp->str, O_APPEND | O_CREAT | O_WRONLY, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)) != -1)
-    {
-        return (wait_client(us->cs, us->addr, fd, GET));
-    }
-    return (0);
+int     window_size(void)
+{
+    struct winsize ws;
+
+    if (ioctl(0, TIOCGWINSZ, &ws) == -1)
+        return (0);
+    return (ws.ws_col);
 }

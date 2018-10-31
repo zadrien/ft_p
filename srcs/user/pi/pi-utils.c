@@ -6,11 +6,11 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/20 15:15:50 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/20 15:17:48 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/30 18:05:44 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "user.h"
+#include "ftp.h"
 
 char    *ft_struct(char *cmd, t_token **arg)
 {

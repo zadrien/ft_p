@@ -6,11 +6,11 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/20 14:24:17 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/20 17:54:15 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/30 17:53:12 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "dtp.h"
+#include "ftp.h"
 
 int     ft_put(t_token **lst, int s) // Cote client
 {

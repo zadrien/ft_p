@@ -6,11 +6,11 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/30 13:27:35 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/28 10:55:16 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/30 18:05:35 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "user.h"
+#include "ftp.h"
 
 char    **create_tab(t_token **lst)
 {

@@ -6,12 +6,12 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/30 13:31:49 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/29 09:56:30 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/30 18:05:40 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
-#include "user.h"
+#include "ftp.h"
 
 int    ft_lpwd(t_token **lst, int socket)
 {
