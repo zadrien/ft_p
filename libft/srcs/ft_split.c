@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 15:49:49 by zadrien           #+#    #+#             */
-/*   Updated: 2017/03/18 18:05:03 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/31 11:28:49 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,11 @@ char			**ft_split(char const *s)
 	int		i;
 	int		l;
 	int		tc;
-	char	**tab;
+	char	**arr;
 
 	tc = -1;
 	i = countword((char *)s);
-	if (!s || i == 0 || !(tab = (char**)malloc(sizeof(char*) * (i + 1))))
+	if (!s || i == 0 || !(arr = (char**)malloc(sizeof(char*) * (i + 1))))
 		return (NULL);
 	i = 0;
 	while (s[i] != '\0')
@@ -80,13 +80,13 @@ char			**ft_split(char const *s)
 		if (s[i] != ' ' && s[i] != '\0' && s[i] != '\t' && s[i] != '\v')
 		{
 			l = countletter((char *)s, i);
-			tab[++tc] = ft_put_word((char *)s + i, l);
+			arr[++tc] = ft_put_word((char *)s + i, l);
 			while (s[i] != ' ' && s[i] != '\0' && s[i] != '\t' && s[i] != '\v')
 				i++;
 		}
 		else
 			i++;
 	}
-	tab[++tc] = NULL;
-	return (tab);
+	arr[++tc] = NULL;
+	return (arr);
 }

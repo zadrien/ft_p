@@ -1,38 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execution.c                                        :+:      :+:    :+:   */
+/*   put-server.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/19 14:58:31 by zadrien           #+#    #+#             */
-/*   Updated: 2018/09/19 15:19:27 by zadrien          ###   ########.fr       */
+/*   Created: 2018/10/21 15:07:39 by zadrien           #+#    #+#             */
+/*   Updated: 2018/10/31 16:19:15 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftp.h"
 
-typedef struct      s_builtin
+int     s_put(t_token **lst, t_usr **usr)
 {
-    char            *cmd;
-    int             (*f)();
-}                   t_builtin;
-
-void    execution(char *str)
-{
-    t_token *tok;
+    int     fd;
     t_token *tmp;
+    t_usr   *us;
 
-    ft_putstr("Client send: ");
-    ft_putendl(str);
-    tok = parser(str);
-    if (tok) {
-        tmp = tok;
-        while (tmp) {
-            ft_putendl(tmp->str);
-            tmp = tmp->next;
-        }
-    } else {
-        ft_putendl_fd("token is null", 2);
+    tmp = (*lst)->next;
+    us = *usr;
+    if ((fd = open(tmp->str, O_APPEND | O_CREAT | O_WRONLY, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)) != -1)
+    {
+        return (wait_client(us->cs, us->addr, fd, GET));
     }
+    return (0);
 }

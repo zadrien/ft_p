@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/19 13:15:44 by zadrien           #+#    #+#             */
-/*   Updated: 2018/09/19 14:51:55 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/10/28 09:21:55 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ t_token    *parser(char *str)
     
     init_token(&start);
     tmp = start;
-    stack = ft_memalloc(100);
+    stack = ft_memalloc(100); // to dynamic allocation
     while (str[i])
     {
         if (str[i] != ' ')

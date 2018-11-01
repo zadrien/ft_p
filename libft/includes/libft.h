@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/19 15:32:31 by zadrien           #+#    #+#             */
-/*   Updated: 2018/09/19 14:50:27 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/11/01 08:33:20 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,19 @@
 # include <string.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <curses.h>
+# include <term.h>
+# include <termios.h>
+# include <signal.h>
+# include <sys/ioctl.h>
 # define BUFF_SIZE 10
+
+typedef struct		s_list
+{
+	void			*content;
+	size_t			content_size;
+	struct s_list	*next;
+}					t_list;
 
 typedef struct		s_env
 {
@@ -25,12 +37,23 @@ typedef struct		s_env
 	struct s_env	*next;
 }					t_env;
 
-typedef struct		s_list
+t_env   			*new_env(char **env);
+int     			add_env(t_env **env, char **var);
+t_env				*find_node(t_env **env, char *var, char *value);
+
+
+typedef struct		s_token
 {
-	void			*content;
-	size_t			content_size;
-	struct s_list	*next;
-}					t_list;
+	char			*str;
+	int				*type;
+	struct s_token	*next;
+}					t_token;
+
+typedef	struct		s_key
+{
+	int				key;
+	void			(*f)(t_token** ,char**, char*, int*);
+}					t_key;
 
 t_list				*ft_lstnew(void const *content, size_t content_size);
 void				ft_lstdelone(t_list **alst, void (*del)(void *, size_t));
@@ -97,23 +120,128 @@ int					ft_errormsg(char *env, char *cmd, char *str);
 char				**ft_split(char const *s);
 void				ft_putendn(int i);
 int					count_tab(char **ta);
-t_env				*find_node(t_env **env, char *var, char *value);
 char				*ft_strjoinf(char *s1, char *s2, int w);
-
-typedef struct		s_token
-{
-	char			*str;
-	int				*type;
-	struct s_token	*next;
-}					t_token;
-
-typedef	struct		s_key
-{
-	int				key;
-	void			(*f)(t_token** ,char**, char*, int*);
-}					t_key;
-
+t_token				*parser(char *aastr);
 void				init_token(t_token **tok);
 void				free_token(t_token **token);
-t_token				*parser(char *str);
+int					ft_countarg(t_token **lst);
+char			    *ft_strndup(char *str, size_t len);
+void    ft_freetab(char **trash);
+
+/**
+ * COMMAND LINE
+ */
+
+/**
+ * COLORS
+ */
+# define RED		"\x1b[31m"
+# define GREEN		"\x1b[32m"
+# define YELLOW		"\x1b[33m"
+# define BLUE		"\x1b[34m"
+# define MAGENTA	"\x1b[35m"
+# define CYAN		"\x1b[36m"
+# define RESET		"\x1b[0m"
+
+/**
+ * USER INTERFACE
+*/
+# define CM_GRP 27
+# define CTRL_D 4
+# define ENTER 10
+# define TAB 9
+# define DEL 127
+
+/**
+ * SECOND CHECKING CM_GRP
+ */
+# define INSERT 50
+# define DEL_FW 51
+# define PGUP 53
+# define PGDN 54
+# define AR_RIGHT 67
+# define AR_LEFT 68
+# define AR_UP 65
+# define AR_DW 66
+# define HOME 72
+# define END 70
+
+size_t				g_win;
+int                 g_shell_terminal;
+int                 g_shell_is_interactive;
+pid_t               g_shell_pgid;
+struct termios		g_shell_termios;
+typedef void		sigfunc(int);
+
+enum on_off
+{
+    OFF = 0,
+    ON = 1
+};
+
+typedef struct		s_choise
+{
+	char			*str;
+	int				i;
+	int				sel;
+	struct s_choise	*prev;
+	struct s_choise	*next;
+}					t_ch;
+
+typedef struct		s_line
+{
+	char			*str;
+	char			buf[6];
+	int				print;
+	size_t			x;
+	size_t			y;
+	size_t			cur;
+	size_t			len;
+	size_t			winsize;
+	size_t			offset;
+	size_t			str_len;
+
+}					t_line;
+
+typedef struct		s_edit
+{
+	t_ch			*select;
+	char			*name_term;
+	struct termios	term;
+}					t_edit;
+
+typedef struct      s_input
+{
+    int     key;
+    int     (*f)(t_line *line);
+}                   t_input;
+
+void    free_line(t_line *line);
+t_line  *init_line(size_t offset, int printable);
+int    	change_value(t_edit **edit, int i);
+int     mode_off(t_edit *term);
+int     mode_on(t_edit *term);
+int     shell_sig(void);
+int     init_term(t_edit *edit);
+t_edit  *init_cmd_line(void);
+int     usefull(int i);
+int     window_size(void);
+int    realloc_line(t_line *line);
+int     multi_pos(t_line *line, size_t len);
+int     old_pos(t_line *line, size_t len);
+int     replace_cursor(t_line *line, int mode);
+int     cm_left(t_line *line);
+int     cm_right(t_line *line);
+int     del_char(t_line *line);
+void    next_line(t_line *line);
+int     print_char(t_line *line);
+int     insert_char(t_line *line);
+int     return_line(t_line *line);
+int     cursor_motion(t_line *line);
+int     ft_tab(t_line *line);
+int		keyboard(t_line *line);
+int     restore_value(t_line *line);
+t_line  *get_line(char *prompt, int printable);
+void    print_msg(char *str, char *color, int fd);
+
 #endif
