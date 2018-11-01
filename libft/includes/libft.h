@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/19 15:32:31 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/31 13:32:20 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/11/01 08:33:20 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,5 +242,6 @@ int     ft_tab(t_line *line);
 int		keyboard(t_line *line);
 int     restore_value(t_line *line);
 t_line  *get_line(char *prompt, int printable);
+void    print_msg(char *str, char *color, int fd);
 
 #endif

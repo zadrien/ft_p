@@ -1,30 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal_handler.c                                   :+:      :+:    :+:   */
+/*   print_msg.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/28 09:32:36 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/30 18:06:19 by zadrien          ###   ########.fr       */
+/*   Created: 2018/11/01 08:32:58 by zadrien           #+#    #+#             */
+/*   Updated: 2018/11/01 08:33:04 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ftp.h"
+#include "libft.h"
 
-
-void        check_signal(int signo)
+void    print_msg(char *str, char *color, int fd)
 {
-
-}
-
-void        signal_handler(void)
-{
-    int     i;
-
-    i = -1;
-    while (++ < 32)
-    {
-        signal(i, check_signal);
-    }
+    ft_putstr_fd(color, fd);
+    ft_putendl_fd(str, fd);
+    ft_putstr_fd(RESET, fd);
 }

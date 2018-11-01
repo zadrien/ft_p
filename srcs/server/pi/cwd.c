@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/29 08:07:24 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/31 16:33:43 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/11/01 10:15:40 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,9 @@ int     send_str(int s, char *str)
     buf[j] = '\0';
     if (buf[0] != '\0')
         send(s, buf, ft_strlen(buf), 0);
+    buf[0] = '\n';
+    buf[1] = '\0';
+    send(s, buf, 2, 0);
     close(s);
     return (226);
 }
@@ -137,11 +140,13 @@ int     s_pwd(t_token **lst, t_usr **usr)
         return (530);
     if (!(*lst)->next)
     {
-        cs = get_socket(*usr);
-        str = get_path(tmp->pwd, tmp->home);
-        ft_putendl("===PWD===");
-        ft_putendl(str);
-        return (send_str(cs, str[0] != '\0' ? str : "/"));
+        if ((cs = get_socket(*usr)) > 0)
+        {
+            if (cs == 425)
+                return (cs);
+            if ((str = get_path(tmp->pwd, tmp->home)))
+                return (send_str(cs, str[0] != '\0' ? str : "/"));
+        }
     }
     return (226);
 }

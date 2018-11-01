@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/31 15:59:26 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/31 16:45:36 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/11/01 09:38:10 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ int     handle_stream(int s, int fd, int print, int mode)
 
 int     wait_server(int s, int fd, int print, int mode)
 {
+    int     r;
     int     cs;
     int     port;
     int     sock;
@@ -97,8 +98,8 @@ int     wait_server(int s, int fd, int print, int mode)
     struct sockaddr     addr;
 
     port = 50042;
-    // if ((r = get_code(s)) == 150) // can cause bug
-    // {
+    if ((r = get_code(s)) == 150) // can cause bug
+    {
         send_code(s, port);
         if ((sock = listen_socket(port)) > 0)
         {
@@ -110,6 +111,6 @@ int     wait_server(int s, int fd, int print, int mode)
             }
             close(sock);
         }
-    // }
+    }
     return (425);
 }

@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/30 13:31:49 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/30 18:05:40 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/11/01 10:20:23 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,17 +35,16 @@ int    ft_lpwd(t_token **lst, int socket)
 
 int    ft_pwd(t_token **lst, int s)
 {
+    int     r;
     char    buf[4] = "PWD\0";
-    char    *line;
     t_token *tmp;
 
     tmp = (*lst)->next;
     if (!tmp)
     {
-        line = ft_struct(buf, &tmp);
-        send(s, line, ft_strlen(line), 0);
-        ft_strdel(&line);
-        return (wait_response(s, 1));// put to 1;
+        if (send_cmd(buf, &tmp, s))
+            if ((r = wait_server(s, NONE, PRINT, GET)) == 226)
+                return (1);
     } else
         ft_putendl_fd("pwd: too many arguments", 2);
     return (0);

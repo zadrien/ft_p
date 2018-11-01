@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/22 15:12:06 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/30 18:03:44 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/11/01 10:56:43 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,15 @@ int     create(t_token **lst, t_usr **usr)
 {
     t_token *tmp;
 
-    tmp = (*lst)->next;
-    if (!(*usr)->user && !(*usr)->password)
+    if (!(*usr)->user)
+    {
+        tmp = (*lst)->next;
         if (tmp)
         {
             if (ft_countarg(&tmp) == 1)
                 return (create_repo(usr, tmp->str));
-        }
-    return (0);
+        } else
+            return (501);
+    }
+    return (230);
 }

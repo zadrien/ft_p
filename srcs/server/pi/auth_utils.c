@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/09 10:49:12 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/30 18:04:09 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/11/01 10:48:21 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int     verify_auth(t_usr **usr, char *str)
 
     tmp = *usr;
     path = NULL;
-    path = ft_strjoinf("./usr/", tmp->user, 0);
+    path = ft_strjoinf("./", tmp->user, 0);
     file = ft_strjoinf(path, "/auth", 0);
     if ((fd = open(file, O_RDONLY)) > 0)
     {
@@ -77,5 +77,5 @@ int     verify_auth(t_usr **usr, char *str)
         return (650);
     }
     ft_strdel(&path);
-    return (0);
+    return (550);
 }

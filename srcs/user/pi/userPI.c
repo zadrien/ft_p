@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 13:06:05 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/31 16:36:41 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/11/01 10:32:14 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,91 +18,50 @@ typedef struct  s_pi
     int        (*f)(t_token**, int s);
 }               t_pi;
 
-int     wait_response(int s, int res)
-{
-    (void)res;
-    int     r;
-
-    recv(s, &r, sizeof(int), 0);
-    printf("response:%d\n", r);
-    return (r);
-}
-
-
-int    ft_username(t_token **lst, int s)
-{
-    (void)s;
-    char                *line;
-    char   buf[5] = "USER\0";
-
-    line = ft_struct(buf, &(*lst)->next);
-    send(s, line, ft_strlen(line), 0);
-    ft_strdel(&line);
-    return (wait_response(s, 0));
-
-}
-
 int    ft_password(t_token **lst, int s)
 {
-    int    r;
-    char                *line;
-    char   buf[5] = "PASS\0";
-    line = ft_struct(buf, &(*lst)->next);
-    send(s, line, ft_strlen(line), 0);
-    ft_strdel(&line);
-    r = get_code(s);
-    if (r == 230) {
-        return (1);
-    } else if (r == 650) {
-        ft_putendl_fd("Please use init command", 2);
-    }
+    if ((*lst)->next)
+        return (send_pass(s, (*lst)->next->str));
     return (0);
 }
 
 int     ft_logout(t_token **lst, int s)
 {
-    (void)s;
-    char                *line;
-    char   buf[5] = "QUIT\0";
-    line = ft_struct(buf, &(*lst)->next);
-    send(s, line, ft_strlen(line), 0);
-    ft_strdel(&line);
-    return (wait_response(s, 0));
-}
+    int     r;
+    char    buf[5] = "QUIT\0";
 
-// int     ft_pwd(t_token **lst, int s)
-// {
-//     (void)s;
-//     char                *line;
-//     char   buf[4] = "PWD\0";
-//     line = ft_struct(buf, &(*lst)->next);
-//     send(s, line, ft_strlen(line), 0);
-//     ft_strdel(&line);
-//     return (wait_response(s, 1));
-// }
+    if (send_cmd(buf, &(*lst)->next, s))
+    {
+        if ((r = get_code(s)) == 220)
+        {
+            print_msg("Logout successful", GREEN, 2);
+            return(1);
+        }
+    }
+    return (0);
+}
 
 int     ft_ls(t_token **lst, int s)
 {
-    (void)s;
-    char    *line;
+    int     r;
     char    buf[5] = "LIST\0";
-    line = ft_struct(buf, &(*lst)->next);
-    send(s, line, ft_strlen(line), 0);
-    ft_strdel(&line);
-    return (wait_server(s, NONE, PRINT, GET));
-    // return (wait_response(s, 1));
+
+    if (send_cmd(buf, &(*lst)->next, s))
+    {
+        if ((r = wait_server(s, NONE, PRINT, GET)) == 226)
+            return (1);
+        
+    }
+    return (0);
 }
 
 int     ft_acct(t_token **lst, int s)
 {
-    (void)lst;
-    char    *line;
     char    buf[5] = "ACCT\0";
 
-    line = ft_struct(buf, &(*lst)->next);
-    send(s, line, ft_strlen(line), 0);
-    ft_strdel(&line);
-    return (wait_response(s, 0));
+    if (send_cmd(buf, &(*lst)->next, s))
+        return (get_code(s));
+    return (0);
 }
 
 int     quit_client(t_token **lst, int s)
@@ -111,8 +70,7 @@ int     quit_client(t_token **lst, int s)
     free_token(lst);
     // verifier que des transfert ne sont pas en cours
     close(s);
-    ft_putendl_fd("Connexion with server closed", 2);
-    ft_putendl("quit client");
+    print_msg("Connexion with server closed\nBye.", RED, 2);
     return (-1);
 }
 
@@ -127,9 +85,7 @@ int     userPI(char *str, int s)
 
     i = -1;
     m = 13;
-    // ft_putendl("ALLOR");
     if ((lst = parser(str)))
-    {
         if (lst->str)
         {
             while (++i < m)
@@ -140,7 +96,6 @@ int     userPI(char *str, int s)
             if (i == m && !ft_strcmp(lst->str, "quit"))
                 return (quit_client(&lst, s)); // clear all var
         }
-    }
     free_token(&lst);
     return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 11:35:53 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/31 15:57:04 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/11/01 08:33:51 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void    start_line(t_edit *term, int socket, int printable, char *prompt)
 
 int     main(int ac, char **av)
 {
+    int     r;
     int     socket;
     t_edit  *term;
 
@@ -76,9 +77,19 @@ int     main(int ac, char **av)
     }
     if (init_term(term))
     {
-        socket = com_link(av[1], av[2]);
-        start_line(term, socket, ON, "$> ");
+        if ((socket = com_link(av[1], av[2])) > 0)
+        {
+            if ((r = get_code(socket)) == 220) 
+            {
+                print_msg("Connection Establishment success.. Please login.", GREEN, 2);
+                start_line(term, socket, ON, "$> ");
+            }
+            else if (r == 421) {
+                print_msg("Service not avalaible, closing control connection", RED, 2);
+            }
+        }
     }
+    close(socket);
     free(term);
     
 }

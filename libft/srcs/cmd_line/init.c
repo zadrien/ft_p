@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 14:38:42 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/31 10:26:40 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/11/01 11:05:17 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void    free_line(t_line *line)
 {
     if (line)
     {
-        ft_putendl("???");
         if (line->str)
             ft_strdel(&line->str);
         free(line);

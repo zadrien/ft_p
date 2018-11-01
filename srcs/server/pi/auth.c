@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/09 12:17:34 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/31 11:44:51 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/11/01 10:48:42 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int    co_attempt(t_usr **usr, char *name)
     t_usr   *tmp;
 
     tmp = *usr;
-    path = ft_strjoinf("./usr/", name, 0);
+    path = ft_strjoinf("./", name, 0);
     if ((dir = opendir(path)))
     {
         closedir(dir);
@@ -45,7 +45,7 @@ int     s_auth(t_token **lst, t_usr **usr)
         } else if ((*usr)->password) {
             return (230);
         }
-    } else
+    } else if (!(*usr)->password)
         return (331);
     return (332);
 }
@@ -56,39 +56,47 @@ int     pass(t_token **lst, t_usr **usr)
     t_token *tmp;
     
     tmp = (*lst)->next;
-    if (tmp)
+    if (!(*usr)->user)
+        return (530);
+    if (!(*usr)->password)
     {
-        if ((*usr)->user && !(*usr)->password)
+        if (ft_countarg(&tmp) == 1)
         {
-            if (ft_countarg(&tmp) == 1)
+            if ((r = verify_auth(usr, tmp->str)) == 1)
             {
-                if ((r = verify_auth(usr, tmp->str)) == 1)
-                {
-                    (*usr)->password = 1;
-                    return (230);
-                } else if (r == 650)
-                    return (650);
-            }
-        } else if ((*usr)->user && (*usr)->password) {
-            return (230); // voir cas si les deux sont nul donc condition vrai
-        }
+                (*usr)->password = 1;
+                return (230);
+            } else
+                return (r);
+        } else
+            return (501);
     }
-    return (530);
+    return (230);
 }
 
 int     s_logout(t_token **lst, t_usr **usr)
 {
-    (void)lst;
-    ft_putendl("LOGOUT");
-
+    char    *line;
     t_usr   *tmp;
-    if ((tmp = *usr))
+
+    (void)lst;
+    tmp = *usr;
+    if (tmp->password)
     {
+        tmp->password = 0;
         ft_strdel(&(tmp)->user);
         ft_strdel(&(tmp)->pwd);
-        free(tmp);
-        *usr = NULL;
-        return (1);
+        line = ft_strjoinf(tmp->home, "/", 0);
+        line = ft_strjoinf(line, "..", 1);
+        ft_strdel(&tmp->home);
+        if (!chdir(line))
+        {
+            ft_strdel(&line);
+            return (220);
+        } else {
+            close(tmp->cs);
+            exit(EXIT_FAILURE);
+        }
     }
     return (0);
 } // to develop // find a way to return to root directory

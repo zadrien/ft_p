@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 13:17:40 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/31 16:15:52 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/11/01 10:29:04 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 
 # include "ftp.h"
 
+int     send_cmd(char *cmd, t_token **arg, int s);
 void    start_line(t_edit *term, int socket, int printable, char *prompt);
 
 char    *ft_struct(char *cmd, t_token **arg);
 int     userPI(char *str, int s);
 int     com_link(char *addr, char *port);
 int     ft_lls(t_token **lst, int socket);
-int     wait_response(int s, int res);
 /**
  * Authentification
 */
@@ -29,6 +29,7 @@ int     auth(t_token **lst, int s);
 int     create_user(int s, char *name);
 int     create_password(int s, char *pass);
 int     create_pass(t_token **lst, int s);
+int     send_pass(int s, char *pass);
 
 
 /**

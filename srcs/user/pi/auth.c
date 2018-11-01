@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/22 10:04:26 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/30 18:05:15 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/11/01 10:58:54 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,14 +67,15 @@ int enter_password(int s, int verify)
             free_line(line);
             if ((r = get_code(s)) == 230)
             {
-                ft_putendl_fd("Connection attempt success", 2);
+                print_msg("Connection attempt success", GREEN, 2);
                 return (1);
             } else if (r == 650) {
-                ft_putendl_fd("Can't find password for this account..\nPlease create it.", 2);
+                print_msg("Can't find password for this account..\nPlease create it.", RED, 2);
                 return (enter_password(s, 1));
+            } else if (r == 550) {
+                print_msg("Request action not taken, no access.", RED, 2);
             } else {
-                ft_putendl_fd("Connection attempt fail", 2);
-                ft_putendl_fd("Please write a correct password", 2);
+                print_msg("Connection attempt fail..\nPlease write a correct password", RED, 2);
                 return (enter_password(s, 0));
             }
         } else {
@@ -107,9 +108,7 @@ int     create_pass(t_token **lst, int s)
 
     tmp = *lst;
     if (ft_countarg(&tmp) == 1)
-    {
         return (enter_password(s, 1));
-    }
     return (0);
 }
 
@@ -124,11 +123,15 @@ int     create_user(int s, char *name)
         line = ft_strjoinf(buf, " ", 0);
         line = ft_strjoinf(line, name, 1);
         send(s, line, ft_strlen(line), 0);
+        ft_strdel(&line);
         r = get_code(s);
         if (r == 1 || r == 331)
         {
-            r == 331 ? ft_putendl_fd("Account already exist!", 2) : 0;
+            if (r == 331)
+                print_msg("Account already exist, please enter password..", RED, 2); // Hmmm ?
             return (enter_password(s, r == 331 ? 0 : 1));
+        } else if (r == 230){
+            print_msg("Already logged in.", RED, 2);
         } else {
             ft_putendl_fd("Error occur", 2);
         }
@@ -147,7 +150,7 @@ int     ask_create(int s, char *name)
             free_line(line);
             if (create_user(s, name))
             {
-                ft_putendl("user & password created");
+                print_msg("Account created and logged in", GREEN, 2);
                 return (1);
             }
         }
@@ -171,20 +174,24 @@ int     auth(t_token **lst, int s)
     t_token *tmp;
 
     tmp = (*lst)->next;
-    ft_putendl("IN");
     if (tmp)
     {
         line  = ft_struct(buf, &tmp);
         send(s, line, ft_strlen(line), 0);
         ft_strdel(&line);
-        r = get_code(s);
-        if (r == 331)
+        if ((r = get_code(s)) == 331)
         {
-            ft_putendl_fd("Valid username", 2);
+            line = ft_strjoinf("Password required for ", tmp->str, 0);
+            print_msg(line, GREEN, 2);
+            ft_strdel(&line);
             if (enter_password(s, 0))
                 return (1);
-        } else if (r == 332)
+        } else if (r == 332) {
+            line = ft_strjoinf(tmp->str, " doesn't exist.", 0);
+            print_msg(line, RED, 2);
+            ft_strdel(&line);
             return (ask_create(s, tmp->str));
+        }
     }
     return (0);
 }

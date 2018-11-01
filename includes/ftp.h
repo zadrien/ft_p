@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 16:57:00 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/31 11:39:22 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/11/01 10:38:31 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ typedef struct      s_usr
 {
     int             cs;
     struct in_addr  addr;
-    int             password;
     char            *user;
+    int             password;
     char            *home;
     char            *pwd;
     struct t_trans  *files;

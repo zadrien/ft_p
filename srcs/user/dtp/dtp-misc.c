@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/31 16:09:04 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/31 16:11:04 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/11/01 10:31:33 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int    get_code(int s)
     r = 0;
     if (recv(s, &r, sizeof(int), 0) == -1)
         perror("recv");
-    printf("get_code(s) =  %d\n", r);    
     return (r);
 }
 

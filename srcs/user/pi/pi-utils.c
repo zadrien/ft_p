@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/20 15:15:50 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/30 18:05:44 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/11/01 10:27:52 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,22 @@ char    *ft_struct(char *cmd, t_token **arg)
             tmp = tmp->next;
         }
     }
-    ft_putendl(line);
     return (line);
+}
+
+int     send_cmd(char *cmd, t_token **arg, int s)
+{
+    int     r;
+    char    *line;
+    t_token *tmp;
+
+    r = 0;
+    tmp = *arg;
+    if ((line = ft_struct(cmd, &tmp)))
+    {
+        send(s, line, ft_strlen(line), 0);
+        ft_strdel(&line);
+        r = 1;
+    }
+    return (r);
 }

@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 12:16:01 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/30 18:04:54 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/11/01 09:20:54 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,18 @@ void    client_session(int cs, struct sockaddr_in addr)
     char            buf[1024];
     t_usr           *usr;
 
-    usr = init_usr(cs, addr);
-    while ((r = read(cs, buf, 1023)) > 0)
+    if ((usr = init_usr(cs, addr)))
     {
-        buf[r] = '\0';
-        ft_putendl(buf);
-        serverPI(buf, &usr, cs);
-    }
-    ft_putendl("End fork close socket");
+        send_code(cs, 220);
+        while ((r = read(cs, buf, 1023)) > 0)
+        {
+            buf[r] = '\0';
+            ft_putendl(buf);
+            serverPI(buf, &usr, cs);
+        }
+        ft_putendl_fd("Client quit the server", 2);
+    } else
+        send_code(cs, 421);
     close(cs);
 }
 
@@ -57,7 +61,11 @@ void    init_fork(int cs, struct sockaddr_in addr)
 {
     if (fork() == 0)
     {
-        client_session(cs, addr);
+        if (!chdir("./usr"))
+        {
+            print_msg("In usr directory", GREEN, 2);
+            client_session(cs, addr);
+        }
         exit(EXIT_FAILURE);
     }
 }

@@ -6,7 +6,7 @@
 /*   By: zadrien <zadrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/20 17:52:01 by zadrien           #+#    #+#             */
-/*   Updated: 2018/10/31 16:41:16 by zadrien          ###   ########.fr       */
+/*   Updated: 2018/11/01 11:06:40 by zadrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,8 @@ int     send_info(int fd, int cs)
 {
     struct stat buf;
 
-    ft_putendl("Here?");
     if (!fstat(fd, &buf))
-    {
-        ft_putendl("??????");
         send(cs, &buf.st_size, sizeof(buf.st_size), 0);
-    }
     return (1);
 }
 
@@ -34,7 +30,7 @@ int     handle_client(int s, int fd, int mode)
     { // stocker dans un fichier
         r = get_stream(s, fd, NONE, NONE);
     } else {
-        send_info(fd, s);
+        send_info(fd, s); // handle error
         r = put_stream(s, fd);
     }
     return (r);
@@ -58,9 +54,12 @@ int     get_socket(t_usr *usr)
 
 int     wait_client(int s, struct in_addr addr, int fd, int mode)
 {
+    int     in;
     int     port;
     int     sock;
 
+    in = 150;
+    send(s, &in, sizeof(int), 0);
     if ((port = get_port(s)))
     {
         printf("DTP PORT = %d\n", port);
